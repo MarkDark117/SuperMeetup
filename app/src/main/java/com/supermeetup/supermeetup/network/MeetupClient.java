@@ -4,6 +4,13 @@ import android.content.Context;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.github.scribejava.core.builder.api.BaseApi;
+import com.supermeetup.supermeetup.model.Category;
+import com.supermeetup.supermeetup.model.Event;
+import com.supermeetup.supermeetup.model.requestparameters.FindEventRequestParameters;
+import com.supermeetup.supermeetup.model.requestparameters.RecommendCategoriesRequestParameters;
+import com.supermeetup.supermeetup.model.requestparameters.TopicCategoriesRequestParameters;
+
+import java.util.ArrayList;
 
 public class MeetupClient extends OAuthBaseClient {
 
@@ -21,4 +28,30 @@ public class MeetupClient extends OAuthBaseClient {
               REST_CONSUMER_SECRET,
               FALLBACK_URL);
     }
+
+    public ArrayList<Category> getCategories(TopicCategoriesRequestParameters requestParameters){
+        /**
+         * TODO
+         * url: https://secure.meetup.com/meetup_api/console/?path=%2Ffind%2Ftopic_categories
+         * requestParameters can be null
+         */
+        return null;
+    }
+
+    public ArrayList<Event> findEvents(FindEventRequestParameters requestParameters){
+        /**
+         * TODO
+         * url: https://secure.meetup.com/meetup_api/console/?path=/find/events
+         */
+        return null;
+    }
+
+    public ArrayList<Event> getRecommendEvents(RecommendCategoriesRequestParameters requestParameters){
+        /**
+         * TODO
+         * url: https://secure.meetup.com/meetup_api/console/?path=/recommended/events
+         */
+        return null;
+    }
+
 }
