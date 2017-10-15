@@ -7,6 +7,7 @@ import android.widget.TextView;
 import android.databinding.DataBindingUtil;
 
 import com.supermeetup.supermeetup.R;
+import com.supermeetup.supermeetup.common.Util;
 import com.supermeetup.supermeetup.model.Category;
 
 
@@ -25,6 +26,7 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(Category category){
-        mTitle.setText(category.shortname);
+        mImage.setImageResource(Util.getMipMapResourceId(mImage.getContext(), "ic_c" + category.id));
+        mTitle.setText(category.name);
     }
 }

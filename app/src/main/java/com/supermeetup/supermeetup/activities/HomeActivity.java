@@ -71,9 +71,6 @@ public class HomeActivity extends AppCompatActivity {
             public void onResponse(Call<ArrayList<Event>> call, Response<ArrayList<Event>> response) {
                 int statusCode = response.code();
                 ArrayList<Event> events = response.body();
-                for(Event e : events){
-                    Log.i("irene", e.getName());
-                }
             }
 
             @Override

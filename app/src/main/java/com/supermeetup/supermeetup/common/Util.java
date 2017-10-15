@@ -1,5 +1,6 @@
 package com.supermeetup.supermeetup.common;
 
+import android.content.Context;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
@@ -88,5 +89,23 @@ public class Util {
         } catch (IllegalAccessException e) {
             Log.e("BNVHelper", "Unable to change value of shift mode", e);
         }
+    }
+
+    public static int getResourceId(Context context, String pVariableName, String pResourcename)
+    {
+        try {
+            return context.getResources().getIdentifier(pVariableName, pResourcename, context.getPackageName());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public static int getMipMapResourceId(Context context, String variableName){
+        int id = getResourceId(context, variableName, "mipmap");
+        if(id == -1){
+            id = getResourceId(context, "ic_c", "mipmap");
+        }
+        return id;
     }
 }
