@@ -6,6 +6,9 @@ import com.github.scribejava.core.model.OAuthConfig;
 import com.github.scribejava.core.oauth.OAuth20Service;
 
 public class MeetupApi20 extends DefaultApi20 {
+
+    public static final String ACCESS_TOKEN_ENDPOINT = "https://secure.meetup.com/oauth2/access";
+
     protected MeetupApi20() {
     }
 
@@ -19,7 +22,7 @@ public class MeetupApi20 extends DefaultApi20 {
 
     @Override
     public String getAccessTokenEndpoint() {
-        return "https://secure.meetup.com/oauth2/access";
+        return ACCESS_TOKEN_ENDPOINT;
     }
 
     @Override
