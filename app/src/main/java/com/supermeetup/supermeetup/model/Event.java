@@ -45,6 +45,12 @@ public class Event {
     @SerializedName("group")
     @Expose
     private Group group;
+    @SerializedName("event_host")
+    @Expose
+    private EventHost eventHost;
+    @SerializedName("fee")
+    @Expose
+    private Fee fee;
     @SerializedName("link")
     @Expose
     private String link;
@@ -152,6 +158,22 @@ public class Event {
 
     public void setGroup(Group group) {
         this.group = group;
+    }
+
+    public EventHost getEventHost() {
+        return eventHost;
+    }
+
+    public void setEventHost(EventHost eventHost) {
+        this.eventHost = eventHost;
+    }
+
+    public Fee getFee() {
+        return fee;
+    }
+
+    public void setFee(Fee fee) {
+        this.fee = fee;
     }
 
     public String getLink() {

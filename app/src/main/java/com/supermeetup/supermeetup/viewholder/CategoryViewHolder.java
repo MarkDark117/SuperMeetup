@@ -26,7 +26,7 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(Category category){
-        mImage.setImageResource(Util.getMipMapResourceId(mImage.getContext(), "ic_c" + category.id));
-        mTitle.setText(category.name);
+        mImage.setImageResource(Util.getMipMapResourceId(mImage.getContext(), "ic_c" + category.getId()));
+        mTitle.setText(category.getName());
     }
 }

@@ -1,11 +1,9 @@
 package com.supermeetup.supermeetup.model;
 
-import com.supermeetup.supermeetup.common.Util;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by yuxin on 10/13/17.
@@ -30,43 +28,72 @@ import java.util.ArrayList;
  *  }
  */
 
-public class Category extends BaseData{
+public class Category {
 
-    public long id = 0;
-    public String shortname = "";
-    public String name = "";
-    public String sort_name = "";
-    public Photo photo = new Photo();
-    public ArrayList<Long> category_ids = new ArrayList<>();
+    @SerializedName("id")
+    @Expose
+    private long id;
+    @SerializedName("shortname")
+    @Expose
+    private String shortname;
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("sort_name")
+    @Expose
+    private String sortName;
+    @SerializedName("photo")
+    @Expose
+    private Photo photo;
+    @SerializedName("category_ids")
+    @Expose
+    private List<Long> categoryIds = null;
 
-
-    @Override
-    public void fromJson(JSONObject json) {
-        if(json == null || json.length() == 0){
-            return;
-        }
-
-        id = json.optLong("id", id);
-        shortname = json.optString("shortname", shortname);
-        name = json.optString("name", name);
-        sort_name = json.optString("sort_name", sort_name);
-        photo.fromJson(json.optJSONObject("photo"));
-        category_ids = Util.putJsonArrayToLongList(json.optJSONArray("category_ids"));
+    public long getId() {
+        return id;
     }
 
-    @Override
-    public JSONObject toJson() {
-        JSONObject json = new JSONObject();
-        try {
-            json.put("id", id);
-            json.put("shortname", shortname);
-            json.put("name", name);
-            json.put("sort_name", sort_name);
-            json.put("photo", photo.toJson());
-            json.put("category_ids", Util.getJsonArrayFromLongArrayList(category_ids));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return json;
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getShortname() {
+        return shortname;
+    }
+
+    public void setShortname(String shortname) {
+        this.shortname = shortname;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSortName() {
+        return sortName;
+    }
+
+    public void setSortName(String sortName) {
+        this.sortName = sortName;
+    }
+
+    public Photo getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Photo photo) {
+        this.photo = photo;
+    }
+
+    public List<Long> getCategoryIds() {
+        return categoryIds;
+    }
+
+    public void setCategoryIds(List<Long> categoryIds) {
+        this.categoryIds = categoryIds;
     }
 }
