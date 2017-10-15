@@ -1,7 +1,7 @@
 package com.supermeetup.supermeetup.model;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by yuxin on 10/13/17.
@@ -34,62 +34,117 @@ import org.json.JSONObject;
  *  }
  */
 
-public class Group extends BaseData {
-    public static final String JOINMODETYPE_OPEN = "open";
-    public static final String JOINMODETYPE_APPROVAL = "approval";
-    public static final String JOINMODETYPE_CLOSED = "closed";
+public class Group {
 
-    public long created = 0;
-    public String name = "";
-    public long id = 0;
-    public String join_mode = "";
-    public double lat = 0.0;
-    public double lon = 0.0;
-    public String urlname = "";
-    public String who = "";
-    public String localized_location = "";
-    public String region = "";
-    public Category category = new Category();
-    public Photo photo = new Photo();
+    @SerializedName("created")
+    @Expose
+    private long created;
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("id")
+    @Expose
+    private long id;
+    @SerializedName("join_mode")
+    @Expose
+    private String joinMode;
+    @SerializedName("lat")
+    @Expose
+    private double lat;
+    @SerializedName("lon")
+    @Expose
+    private double lon;
+    @SerializedName("urlname")
+    @Expose
+    private String urlname;
+    @SerializedName("who")
+    @Expose
+    private String who;
+    @SerializedName("localized_location")
+    @Expose
+    private String localizedLocation;
+    @SerializedName("region")
+    @Expose
+    private String region;
 
-    @Override
-    public void fromJson(JSONObject json) {
-        if(json == null || json.length() == 0){
-            return;
-        }
-        created = json.optLong("created", created);
-        name = json.optString("name", name);
-        join_mode = json.optString("join_mode", join_mode);
-        lat = json.optDouble("lat", lat);
-        lon = json.optDouble("lon", lon);
-        urlname = json.optString("urlname", urlname);
-        who = json.optString("who", who);
-        localized_location = json.optString("localized_location", localized_location);
-        region = json.optString("region", region);
-        category.fromJson(json.optJSONObject("category"));
-        photo.fromJson(json.optJSONObject("photo"));
+    public long getCreated() {
+        return created;
     }
 
-    @Override
-    public JSONObject toJson() {
-        JSONObject json = new JSONObject();
-        try {
-            json.put("created", created);
-            json.put("name", name);
-            json.put("id", id);
-            json.put("join_mode", join_mode);
-            json.put("lat", lat);
-            json.put("lon", lon);
-            json.put("urlname", urlname);
-            json.put("who", who);
-            json.put("localized_location", localized_location);
-            json.put("region", region);
-            json.put("category", category.toJson());
-            json.put("photo", photo.toJson());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return json;
+    public void setCreated(long created) {
+        this.created = created;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getJoinMode() {
+        return joinMode;
+    }
+
+    public void setJoinMode(String joinMode) {
+        this.joinMode = joinMode;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double lon) {
+        this.lon = lon;
+    }
+
+    public String getUrlname() {
+        return urlname;
+    }
+
+    public void setUrlname(String urlname) {
+        this.urlname = urlname;
+    }
+
+    public String getWho() {
+        return who;
+    }
+
+    public void setWho(String who) {
+        this.who = who;
+    }
+
+    public String getLocalizedLocation() {
+        return localizedLocation;
+    }
+
+    public void setLocalizedLocation(String localizedLocation) {
+        this.localizedLocation = localizedLocation;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
 }
