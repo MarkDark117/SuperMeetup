@@ -42,7 +42,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
                 if (!TextUtils.isEmpty(photoLink)) {
                     Picasso.with(mName.getContext())
                             .load(photoLink)
-                            .placeholder(R.mipmap.ic_launcher)
+                            .placeholder(R.drawable.logo)
                             .into(mImage);
                 }
             }

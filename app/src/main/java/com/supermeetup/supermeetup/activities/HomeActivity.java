@@ -1,7 +1,6 @@
 package com.supermeetup.supermeetup.activities;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.location.Location;
@@ -20,7 +19,6 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.supermeetup.supermeetup.MeetupApp;
 import com.supermeetup.supermeetup.R;
-import com.supermeetup.supermeetup.adapter.CategoryAdapter;
 import com.supermeetup.supermeetup.adapter.NearbyAdapter;
 import com.supermeetup.supermeetup.common.LocationHelper;
 import com.supermeetup.supermeetup.common.Util;
@@ -35,9 +33,6 @@ import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import com.supermeetup.supermeetup.network.MeetupClient;
-import com.supermeetup.supermeetup.viewholder.CategoryViewHolder;
 
 public class HomeActivity extends AppCompatActivity {
 

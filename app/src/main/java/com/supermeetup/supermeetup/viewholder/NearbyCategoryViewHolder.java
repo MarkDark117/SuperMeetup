@@ -15,11 +15,11 @@ import com.supermeetup.supermeetup.model.Category;
  * Created by yuxin on 10/14/17.
  */
 
-public class CategoryViewHolder extends RecyclerView.ViewHolder {
+public class NearbyCategoryViewHolder extends RecyclerView.ViewHolder {
     private ImageView mImage;
     private TextView mTitle;
 
-    public CategoryViewHolder(View itemView) {
+    public NearbyCategoryViewHolder(View itemView) {
         super(itemView);
         mImage = itemView.findViewById(R.id.category_image);
         mTitle = itemView.findViewById(R.id.category_title);

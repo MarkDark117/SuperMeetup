@@ -8,8 +8,7 @@ import android.view.ViewGroup;
 import com.supermeetup.supermeetup.R;
 import com.supermeetup.supermeetup.model.Category;
 import com.supermeetup.supermeetup.model.Event;
-import com.supermeetup.supermeetup.viewholder.CategoryListViewHolder;
-import com.supermeetup.supermeetup.viewholder.CategoryViewHolder;
+import com.supermeetup.supermeetup.viewholder.NearbyCategoryListViewHolder;
 import com.supermeetup.supermeetup.viewholder.EventViewHolder;
 
 import java.util.ArrayList;
@@ -53,7 +52,7 @@ public class NearbyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType){
             case VIEWTYPE_CATEGORYLIST:
-                return new CategoryListViewHolder((LayoutInflater.from(parent.getContext()).inflate(R.layout.item_categorylist, parent, false)));
+                return new NearbyCategoryListViewHolder((LayoutInflater.from(parent.getContext()).inflate(R.layout.item_categorylist, parent, false)));
             case VIEWTYPE_EVENTITEM:
                 return new EventViewHolder((LayoutInflater.from(parent.getContext()).inflate(R.layout.item_event, parent, false)));
             default:
@@ -66,7 +65,7 @@ public class NearbyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         int viewType = holder.getItemViewType();
         switch (viewType){
             case VIEWTYPE_CATEGORYLIST:
-                ((CategoryListViewHolder) holder).bind(mCategories);
+                ((NearbyCategoryListViewHolder) holder).bind(mCategories);
                 break;
             case VIEWTYPE_EVENTITEM:
                 ((EventViewHolder) holder).bind(mEvents.get(position-1));

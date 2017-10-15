@@ -24,4 +24,6 @@
     <string name="navigation_find">Find</string>
     <string name="navigation_new">New</string>
     <string name="navigation_shake">Shake</string>
+
+    <string name="more">More</string>
 </resources>

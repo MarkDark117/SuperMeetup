@@ -11,4 +11,5 @@
     <dimen name="h1">16sp</dimen>
     <dimen name="h2">14sp</dimen>
     <dimen name="p">12sp</dimen>
+    <dimen name="p.small">10sp</dimen>
 </resources>

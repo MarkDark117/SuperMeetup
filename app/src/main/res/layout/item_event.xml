@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/div"
-    android:layout_height="100dp"
-    android:layout_marginBottom="1dp">
+    android:layout_height="110dp"
+    android:layout_marginBottom="1dp"
+    android:gravity="bottom">
 
     <ImageView
         android:id="@+id/event_image"
@@ -10,33 +11,40 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/logo"/>
 
-    <LinearLayout
-        style="@style/div.vlist"
+    <RelativeLayout
+        style="@style/div"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:gravity="bottom"
+        android:gravity="left|center_vertical"
         android:padding="@dimen/margin_normal"
-        android:background="@color/black_semi_99">
+        android:background="#efffffff">
+
+        <TextView
+            android:id="@+id/event_address"
+            android:layout_alignParentBottom="true"
+            style="@style/div.p"/>
+
+        <TextView
+            android:id="@+id/event_group"
+            android:layout_above="@id/event_address"
+            style="@style/div.h2"/>
 
         <TextView
             android:id="@+id/event_name"
             style="@style/div.h1"
-            android:textColor="@color/white"
+            android:layout_alignParentTop="true"
+            android:layout_above="@id/event_group"
+            android:gravity="center_vertical"
             android:lines="2"
             android:ellipsize="end"/>
 
-        <TextView
-            android:id="@+id/event_group"
-            style="@style/div.h2"
-            android:textColor="@color/grey100"/>
+    </RelativeLayout>
 
-        <TextView
-            android:id="@+id/event_address"
-            style="@style/div.p"
-            android:textColor="@color/grey100"/>
-
-    </LinearLayout>
+    <TextView
+        style="@style/div.divider"
+        android:layout_alignParentTop="true"/>
 
 </RelativeLayout>
