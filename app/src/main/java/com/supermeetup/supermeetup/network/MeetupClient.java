@@ -86,4 +86,15 @@ public class MeetupClient extends OAuthBaseClient {
         Call<ArrayList<Category>> call = apiService.findTopicCategories(fields, lat, lon, radius);
         call.enqueue(callback);
     }
+
+    public void recommendedEvents(@NonNull Callback<ArrayList<Event>> callback,
+                                  @Nullable String fields,
+                                  @Nullable Double lat,
+                                  @Nullable Double lon,
+                                  @Nullable Integer page,
+                                  @Nullable Boolean self_groups,
+                                  @Nullable Integer topic_category) {
+        Call<ArrayList<Event>> call = apiService.recommendedEvents(fields, lat, lon, page, self_groups, topic_category);
+        call.enqueue(callback);
+    }
 }

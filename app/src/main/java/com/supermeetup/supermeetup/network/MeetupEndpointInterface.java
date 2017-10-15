@@ -41,4 +41,22 @@ public interface MeetupEndpointInterface {
                                                   @Nullable @Query("lat") Double lat,
                                                   @Nullable @Query("lon") Double lon,
                                                   @Nullable @Query("radius") Float radius);
+
+    /**
+     *
+     * @param fields A comma-delimited list of optional fields to populate in the response
+     * @param lat Approximate target latitude
+     * @param lon Approximate target longitude
+     * @param page A target minimum number of events to return in a single page of results. The number returned is non-deterministic but a best-effort attempt will be made to return at least some. Defaults to 32
+     * @param self_groups Boolean indicator of whether or not to include events within your existing Meetup network. This includes groups in locations that may differ from the target location. Defaults to true
+     * @param topic_category Numeric topic category identifier for filtering recommendations by a topic category
+     * @return The api call
+     */
+    @GET("/recommended/events")
+    Call<ArrayList<Event>> recommendedEvents(@Nullable @Query("fields") String fields,
+                                             @Nullable @Query("lat") Double lat,
+                                             @Nullable @Query("lon") Double lon,
+                                             @Nullable @Query("page") Integer page,
+                                             @Nullable @Query("self_groups") Boolean self_groups,
+                                             @Nullable @Query("topic_category") Integer topic_category);
 }

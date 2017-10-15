@@ -49,9 +49,26 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
                 // Log error here since request failed
-                Log.e("finderror", "Find event topic categories error: " + t.toString());
+                Log.e("finderror", "Find topic categories request error: " + t.toString());
             }
         }, null, null, null, null);
+        */
+
+        /*
+        meetupClient.recommendedEvents(new Callback<ArrayList<Event>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Event>> call, Response<ArrayList<Event>> response) {
+                int statusCode = response.code();
+                ArrayList<Event> categories = response.body();
+                statusCode = 0;
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Event>> call, Throwable t) {
+                // Log error here since request failed
+                Log.e("finderror", "Recommended event request error: " + t.toString());
+            }
+        }, null, null, null, null, null, null);
         */
     }
 }
