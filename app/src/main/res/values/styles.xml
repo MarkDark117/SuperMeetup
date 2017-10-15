@@ -6,6 +6,20 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="div">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="div.vlist" parent="div">
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="div.hlist" parent="div">
+        <item name="android:orientation">horizontal</item>
+    </style>
 </resources>

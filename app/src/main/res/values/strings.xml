@@ -18,4 +18,10 @@
     <string name="intent_host">supermeetup.com</string>
     <string name="login_success">Login success!</string>
     <string name="login_fail">Login fail!</string>
+
+    <!--Navigation-->
+    <string name="navigation_nearby">Nearby</string>
+    <string name="navigation_find">Find</string>
+    <string name="navigation_new">New</string>
+    <string name="navigation_shake">Shake</string>
 </resources>
