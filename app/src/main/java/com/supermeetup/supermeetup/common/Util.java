@@ -1,6 +1,8 @@
 package com.supermeetup.supermeetup.common;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
@@ -16,9 +18,13 @@ import org.json.JSONObject;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class Util {
 
     public static final int PERMISSIONREQUEST_ACCESS_LOCATION = 0;
+
+    public static final String KEY_ATTEMPTINGLOGIN = "attempinglogin";
 
     public static void disableBottomNavigationViewShiftMode(BottomNavigationView view) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
@@ -58,6 +64,18 @@ public class Util {
             id = getResourceId(context, "ic_c", "mipmap");
         }
         return id;
+    }
+
+    public static void writeBoolean(Activity activity, String key, boolean value){
+        SharedPreferences preferences = activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(key, value);
+        editor.commit();
+    }
+
+    public static boolean readBoolean(Activity activity, String key){
+        SharedPreferences preferences = activity.getPreferences(Context.MODE_PRIVATE);
+        return preferences.getBoolean(key, false);
     }
 
 }
