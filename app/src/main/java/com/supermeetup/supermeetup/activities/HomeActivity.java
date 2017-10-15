@@ -3,19 +3,11 @@ package com.supermeetup.supermeetup.activities;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.supermeetup.supermeetup.MeetupApp;
 import com.supermeetup.supermeetup.R;
 import com.supermeetup.supermeetup.databinding.ActivityHomeBinding;
-import com.supermeetup.supermeetup.model.Event;
 import com.supermeetup.supermeetup.network.MeetupClient;
-
-import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -28,6 +20,8 @@ public class HomeActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         meetupClient = MeetupApp.getRestClient(this);
 
+        /*
+        // test findEvent
         meetupClient.findEvent(new Callback<ArrayList<Event>>() {
             @Override
             public void onResponse(Call<ArrayList<Event>> call, Response<ArrayList<Event>> response) {
@@ -40,6 +34,24 @@ public class HomeActivity extends AppCompatActivity {
                 // Log error here since request failed
                 Log.e("finderror", "Find event request error: " + t.toString());
             }
-        });
+        }, null, null, null, 0.5f, null);
+        */
+
+        /*
+        // test findTopicCategories
+        meetupClient.findTopicCategories(new Callback<ArrayList<Category>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
+                int statusCode = response.code();
+                ArrayList<Category> categories = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
+                // Log error here since request failed
+                Log.e("finderror", "Find event topic categories error: " + t.toString());
+            }
+        }, null, null, null, null);
+        */
     }
 }

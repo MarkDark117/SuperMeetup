@@ -2,10 +2,12 @@ package com.supermeetup.supermeetup.network;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.github.scribejava.core.builder.api.BaseApi;
 import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.supermeetup.supermeetup.model.Category;
 import com.supermeetup.supermeetup.model.Event;
 
 import java.io.IOException;
@@ -64,10 +66,24 @@ public class MeetupClient extends OAuthBaseClient {
         apiService = retrofit.create(MeetupEndpointInterface.class);
     }
 
-    public void findEvent(@NonNull Callback<ArrayList<Event>> callback) {
+    public void findEvent(@NonNull Callback<ArrayList<Event>> callback,
+                          @Nullable String fields,
+                          @Nullable Double lat,
+                          @Nullable Double lon,
+                          @Nullable Float radius,
+                          @Nullable String text) {
 
-        // Test call
-        Call<ArrayList<Event>> call = apiService.findEvent(null, 0.5f, null, null, null);
+        Call<ArrayList<Event>> call = apiService.findEvent(fields, lat, lon, radius, text);
+        call.enqueue(callback);
+    }
+
+    public void findTopicCategories(@NonNull Callback<ArrayList<Category>> callback,
+                                    @Nullable String fields,
+                                    @Nullable Double lat,
+                                    @Nullable Double lon,
+                                    @Nullable Float radius) {
+
+        Call<ArrayList<Category>> call = apiService.findTopicCategories(fields, lat, lon, radius);
         call.enqueue(callback);
     }
 }

@@ -1,7 +1,7 @@
 package com.supermeetup.supermeetup.model;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by yuxin on 10/13/17.
@@ -16,46 +16,73 @@ import org.json.JSONObject;
  *  }
  */
 
-public class Photo extends BaseData {
-    public static final String PHOTOTYPE_EVENT = "event";
-    public static final String PHOTOTYPE_MEMBER = "member";
+public class Photo {
 
-    public long id = 0;
-    public String highres_link = "";
-    public String photo_link = "";
-    public String thumb_link = "";
-    public String type = "";
-    public String base_url = "";
-    @Override
-    public void fromJson(JSONObject json) {
-        if(json == null || json.length() == 0){
-            return;
-        }
+    @SerializedName("id")
+    @Expose
+    private long id;
+    @SerializedName("highres_link")
+    @Expose
+    private String highresLink;
+    @SerializedName("photo_link")
+    @Expose
+    private String photoLink;
+    @SerializedName("thumb_link")
+    @Expose
+    private String thumbLink;
+    @SerializedName("type")
+    @Expose
+    private String type;
+    @SerializedName("base_url")
+    @Expose
+    private String baseUrl;
 
-        id = json.optLong("id", id);
-        highres_link = json.optString("highres_link", highres_link);
-        photo_link = json.optString("photo_link", photo_link);
-        thumb_link = json.optString("thumb_link", thumb_link);
-        type = json.optString("type", type);
-        base_url = json.optString("base_url", base_url);
+    public long getId() {
+        return id;
     }
 
-    @Override
-    public JSONObject toJson() {
-        JSONObject json = new JSONObject();
-        try {
-            json.put("highres_link", highres_link);
-            json.put("photo_link", photo_link);
-            json.put("thumb_link", thumb_link);
-            json.put("type", type);
-            json.put("base_url", base_url);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return json;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public boolean isEventPhoto(){
-        return PHOTOTYPE_EVENT.equals(type);
+    public String getHighresLink() {
+        return highresLink;
     }
+
+    public void setHighresLink(String highresLink) {
+        this.highresLink = highresLink;
+    }
+
+    public String getPhotoLink() {
+        return photoLink;
+    }
+
+    public void setPhotoLink(String photoLink) {
+        this.photoLink = photoLink;
+    }
+
+    public String getThumbLink() {
+        return thumbLink;
+    }
+
+    public void setThumbLink(String thumbLink) {
+        this.thumbLink = thumbLink;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
 }

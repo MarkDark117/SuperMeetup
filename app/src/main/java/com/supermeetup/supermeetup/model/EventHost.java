@@ -1,7 +1,7 @@
 package com.supermeetup.supermeetup.model;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by yuxin on 10/13/17.
@@ -21,36 +21,51 @@ import org.json.JSONObject;
  *  }
  */
 
-public class EventHost extends BaseData {
+public class EventHost {
 
-    public long id = 0;
-    public String name = "";
-    public String intro = "";
-    public Photo photo = new Photo();
+    @SerializedName("id")
+    @Expose
+    private long id;
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("intro")
+    @Expose
+    private String intro;
+    @SerializedName("photo")
+    @Expose
+    private Photo photo;
 
-    @Override
-    public void fromJson(JSONObject json) {
-        if(json == null || json.length() == 0){
-            return;
-        }
-
-        id = json.optLong("id", id);
-        name = json.optString("name", name);
-        intro = json.optString("intro", intro);
-        photo.fromJson(json.optJSONObject("photo"));
+    public long getId() {
+        return id;
     }
 
-    @Override
-    public JSONObject toJson() {
-        JSONObject json = new JSONObject();
-        try {
-            json.put("id", id);
-            json.put("name", name);
-            json.put("intro", intro);
-            json.put("photo", photo.toJson());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return json;
+    public void setId(long id) {
+        this.id = id;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getIntro() {
+        return intro;
+    }
+
+    public void setIntro(String intro) {
+        this.intro = intro;
+    }
+
+    public Photo getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Photo photo) {
+        this.photo = photo;
+    }
+
 }
