@@ -7,6 +7,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
 
 import com.supermeetup.supermeetup.model.EventHost;
+import com.supermeetup.supermeetup.model.Venue;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +17,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class Util {
+
+    public static final int PERMISSIONREQUEST_ACCESS_LOCATION = 0;
 
     public static void disableBottomNavigationViewShiftMode(BottomNavigationView view) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
@@ -56,4 +59,5 @@ public class Util {
         }
         return id;
     }
+
 }

@@ -47,13 +47,14 @@
             android:id="@+id/home_listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/amber50"
+            android:layout_marginBottom="@dimen/bottom_bar_height"
+            android:background="@color/white"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/home_navigation"
             style="@style/div"
-            android:layout_height="56dp"
+            android:layout_height="@dimen/bottom_bar_height"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="bottom"

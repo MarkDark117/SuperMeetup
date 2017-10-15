@@ -22,4 +22,29 @@
     <style name="div.hlist" parent="div">
         <item name="android:orientation">horizontal</item>
     </style>
+
+    <style name="div.h1" parent="div">
+        <item name="android:textColor">@color/textH1</item>
+        <item name="android:textSize">@dimen/h1</item>
+    </style>
+
+    <style name="div.h2" parent="div">
+        <item name="android:textColor">@color/textH2</item>
+        <item name="android:textSize">@dimen/h2</item>
+    </style>
+
+    <style name="div.p" parent="div">
+        <item name="android:textColor">@color/textP</item>
+        <item name="android:textSize">@dimen/p</item>
+    </style>
+
+    <style name="div.vlist.item" parent="div.vlist">
+        <item name="android:padding">@dimen/margin_normal</item>
+        <item name="android:layout_marginBottom">@dimen/margin_mid</item>
+    </style>
+
+    <style name="div.hlist.item" parent="div.hlist">
+        <item name="android:padding">@dimen/margin_normal</item>
+        <item name="android:layout_marginBottom">@dimen/margin_mid</item>
+    </style>
 </resources>
