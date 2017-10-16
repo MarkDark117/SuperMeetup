@@ -10,9 +10,18 @@ Incorporates 4 mobile-oriented features: maps, location, sensors, and real-time.
 
 The following **required** functionality is completed:
 
-* [ ] User can switch Nearby, Search, New and Shake UI using tabs.
-* [ ] Nearby: Show nearby meetups
-* [ ] Search: User can search meetups. Show search result in a list by default and can be switch to mapview
+* [x] Build data model and app structure.
+* [x] User can log in to get authentication.
+* [x] User can [get meetup categorys](https://www.meetup.com/meetup_api/docs/find/topic_categories/)
+* [x] User can [find meetups](https://www.meetup.com/meetup_api/docs/find/events/)
+* [x] User can [get recommended meetups](https://www.meetup.com/meetup_api/docs/recommended/events/)
+* [ ] User can subscribe [real time open meetups](https://www.meetup.com/meetup_api/docs/stream/2/open_events/)
+* [x] Use AppBarLayout + Recyclerview + BottomNavigationView in CoordinatorLayout 
+* [x] User can switch Nearby, Search, New and Shake UI using BottomNavigationView.
+* [x] Nearby: Show nearby meetups
+* [x] Search: User can search meetups. 
+  * [x] Show search result in a list by default 
+  * [ ] and can be switch to mapview
 * [ ] New: User can see real-time new meetups in mapview. Get real-time new meetups via Meetup Stream API
 * [ ] Shake: User can shake phone to get a recommended meetup.
 * [ ] Click any meetup item, user can see the meetup detail UI.
@@ -41,12 +50,24 @@ Here's the wireframing file: [Fluid UI](https://www.fluidui.com/editor/live/prev
 
 GIF created with [EZGIF.com](https://ezgif.com/video-to-gif).
 
+## Sprint 1
+
+Here's a walkthrough of finished user stories:
+[video](https://github.com/super-meetup/SuperMeetup/blob/master/media/sprint1/sprint1.mp4)
+
+<img src='https://github.com/super-meetup/SuperMeetup/blob/master/media/sprint1/sprint1.gif' title='GIF Walkthrough SuperMeetup Sprint 1' width='' alt='GIF Walkthrough SuperMeetup Sprint 1' />
+
+
+GIF created with [EZGIF.com](https://ezgif.com/video-to-gif).
+
 ## Open-source libraries used
 
 - [CodePath OAuth Handler](https://github.com/codepath/android-oauth-handler) - Android OAuth Wrapper makes authenticating with APIs simple
 - [Android Async HTTP](https://github.com/loopj/android-async-http) - Simple asynchronous HTTP requests with JSON parsing
-- [Glide](https://github.com/bumptech/glide) - An image loading and caching library for Android focused on smooth scrolling
+- [Picasso](http://square.github.io/picasso/) - Image loading and caching library for Android
 - [Parceler library](http://guides.codepath.com/android/Using-Parceler)
+- [Retrofit](https://github.com/square/retrofit)
+- [Gson](https://github.com/google/gson)
 
 ## License
 
