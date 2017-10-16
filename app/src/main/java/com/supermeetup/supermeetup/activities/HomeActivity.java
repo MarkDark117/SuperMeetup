@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.SearchView;
 import android.view.MenuItem;
 import android.util.Log;
 import android.widget.Toast;
@@ -40,27 +41,17 @@ public class HomeActivity extends AppCompatActivity {
     private MeetupClient meetupClient;
     private LocationHelper mLocationHelper;
     private Location mLocation;
+    private int mCurrentTabId = R.id.navigation_nearby;
+    private String mQuery = "";
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_nearby:
-                    //binding.text.setText(R.string.navigation_nearby);
-                    return true;
-                case R.id.navigation_find:
-                    //binding.text.setText(R.string.navigation_find);
-                    return true;
-                case R.id.navigation_new:
-                    //binding.text.setText(R.string.navigation_new);
-                    return true;
-                case R.id.navigation_shake:
-                    //binding.text.setText(R.string.navigation_shake);
-                    return true;
-            }
-            return false;
+            mCurrentTabId = item.getItemId();
+            loadContent();
+            return true;
         }
 
     };
@@ -74,6 +65,22 @@ public class HomeActivity extends AppCompatActivity {
         binding.homeListview.setLayoutManager(new LinearLayoutManager(this));
         binding.homeListview.setAdapter(new NearbyAdapter(this));
 
+        binding.homeSearchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                binding.homeNavigation.setSelectedItemId(R.id.navigation_find);
+                mCurrentTabId = R.id.navigation_find;
+                mQuery = binding.homeSearchview.getQuery().toString();
+                Util.hideSoftKeyboard(HomeActivity.this);
+                loadContent();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
         meetupClient = MeetupApp.getRestClient(this);
 
@@ -100,7 +107,7 @@ public class HomeActivity extends AppCompatActivity {
                     Util.PERMISSIONREQUEST_ACCESS_LOCATION);
 
         }else{
-            loadContent();
+            mLocationHelper.getLocation(this, locationResult);
         }
     }
 
@@ -116,7 +123,7 @@ public class HomeActivity extends AppCompatActivity {
 
                     if(coarseLocation && fineLocation)
                     {
-                        loadContent();
+                        mLocationHelper.getLocation(this, locationResult);
                     } else {
                         //TODO
                     }
@@ -126,7 +133,19 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void loadContent(){
-        mLocationHelper.getLocation(this, locationResult);
+        switch (mCurrentTabId){
+            case R.id.navigation_nearby:
+                loadCategories();
+                loadRecommendEvents();
+                break;
+            case R.id.navigation_find:
+                loadEvents();
+                break;
+            case R.id.navigation_new:
+                break;
+            case R.id.navigation_shake:
+                break;
+        }
     }
 
     public LocationHelper.LocationResult locationResult = new LocationHelper.LocationResult() {
@@ -139,9 +158,7 @@ public class HomeActivity extends AppCompatActivity {
 
             Toast.makeText(getApplicationContext(), "Got Location",
                     Toast.LENGTH_LONG).show();
-
-            loadCategories();
-            loadRecommendEvents();
+            loadContent();
         }
     };
 
@@ -182,7 +199,7 @@ public class HomeActivity extends AppCompatActivity {
                 // Log error here since request failed
                 Log.e("finderror", "Recommended event request error: " + t.toString());
             }
-        }, "group_category, group_photo", mLocation.getLatitude(), mLocation.getLongitude(), null, null, null);
+        }, Util.FIELDS_DEFAULT, mLocation.getLatitude(), mLocation.getLongitude(), null, null, null);
     }
 
     private void loadEvents(){
@@ -192,6 +209,7 @@ public class HomeActivity extends AppCompatActivity {
                 int statusCode = response.code();
                 ArrayList<Event> events = response.body();
                 if(events != null){
+                    setCategoryList(null);
                     setEventList(events);
                 }
             }
@@ -201,6 +219,6 @@ public class HomeActivity extends AppCompatActivity {
                 // Log error here since request failed
                 Log.e("finderror", "Find event request error: " + t.toString());
             }
-        }, null, null, null, 0.5f, null);
+        }, Util.FIELDS_DEFAULT, null, null, null, mQuery);
     }
 }

@@ -41,7 +41,7 @@ public class NearbyCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemCount() {
-        if(mCategories.size() == 0){
+        if(mCategories == null || mCategories.size() == 0){
             return 0;
         }else if(mCategories.size() > 7){
             return 8;

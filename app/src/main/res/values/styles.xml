@@ -14,6 +14,13 @@
         <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
+    <style name="actionbar" parent="@android:style/Theme.Holo">
+        <item name="android:textColorHint">@color/red100</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:editTextColor">@color/white</item>
+        <!-- your other custom widget styles -->
+    </style>
+
     <style name="div">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

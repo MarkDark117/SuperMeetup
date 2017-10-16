@@ -7,6 +7,7 @@ import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
 
 import com.supermeetup.supermeetup.model.EventHost;
 import com.supermeetup.supermeetup.model.Venue;
@@ -25,6 +26,8 @@ public class Util {
     public static final int PERMISSIONREQUEST_ACCESS_LOCATION = 0;
 
     public static final String KEY_ATTEMPTINGLOGIN = "attempinglogin";
+
+    public static final String FIELDS_DEFAULT = "group_category, group_photo";
 
     public static void disableBottomNavigationViewShiftMode(BottomNavigationView view) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
@@ -76,6 +79,16 @@ public class Util {
     public static boolean readBoolean(Activity activity, String key){
         SharedPreferences preferences = activity.getPreferences(Context.MODE_PRIVATE);
         return preferences.getBoolean(key, false);
+    }
+
+    public static void hideSoftKeyboard(Activity activity) {
+        if (activity != null) {
+            InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (activity.getCurrentFocus() != null && inputManager != null) {
+                inputManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+                inputManager.hideSoftInputFromInputMethod(activity.getCurrentFocus().getWindowToken(), 0);
+            }
+        }
     }
 
 }

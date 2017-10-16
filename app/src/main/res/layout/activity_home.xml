@@ -39,8 +39,15 @@
                 android:id="@+id/home_searchview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:theme="@style/actionbar"
+                app:theme="@style/actionbar"
                 android:iconifiedByDefault="false"
-                app:iconifiedByDefault="false"/>
+                app:iconifiedByDefault="false"
+                android:queryHint="@string/search_hint"
+                app:queryHint="@string/search_hint"
+                app:searchHintIcon="@mipmap/ic_search"
+                app:searchIcon="@mipmap/ic_search"
+                app:closeIcon="@mipmap/ic_close"/>
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v7.widget.RecyclerView
