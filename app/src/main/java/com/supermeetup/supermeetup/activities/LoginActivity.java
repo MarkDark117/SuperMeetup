@@ -24,7 +24,6 @@ public class LoginActivity extends OAuthLoginActionBarActivity<MeetupClient> {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Util.writeBoolean(this, Util.KEY_ATTEMPTINGLOGIN, isAttempingLogin);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         binding.login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +80,13 @@ public class LoginActivity extends OAuthLoginActionBarActivity<MeetupClient> {
         binding.progressbar.setVisibility(View.GONE);
         binding.login.setVisibility(View.VISIBLE);
         isAttempingLogin = false;
+        Util.writeBoolean(this, Util.KEY_ATTEMPTINGLOGIN, isAttempingLogin);
+    }
+
+    @Override
+    public void onDestroy(){
+        Util.writeBoolean(this, Util.KEY_ATTEMPTINGLOGIN, false);
+        super.onDestroy();
     }
 
 }
