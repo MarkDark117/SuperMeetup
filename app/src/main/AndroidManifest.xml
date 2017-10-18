@@ -44,9 +44,10 @@
 
         <activity android:name=".activities.HomeActivity"></activity>
 
-        <activity android:name=".activities.RecommendEventsActivity"></activity>
+        <activity
+            android:name=".activities.RecommendEventsActivity"
+            android:launchMode="singleTask"></activity>
 
-        <activity android:name=".activities.CategoryActivity" android:theme="@style/AppTheme.transparent"></activity>
     </application>
 
 </manifest>

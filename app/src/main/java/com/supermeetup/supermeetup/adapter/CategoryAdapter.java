@@ -1,7 +1,7 @@
 package com.supermeetup.supermeetup.adapter;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,9 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.supermeetup.supermeetup.R;
-import com.supermeetup.supermeetup.activities.CategoryActivity;
-import com.supermeetup.supermeetup.callback.CloseActivityCallback;
+import com.supermeetup.supermeetup.callback.UIActionCallback;
 import com.supermeetup.supermeetup.databinding.ItemCategoryBinding;
+import com.supermeetup.supermeetup.dialog.CategoryDialog;
 import com.supermeetup.supermeetup.model.Category;
 import com.supermeetup.supermeetup.viewholder.CategoryViewHolder;
 
@@ -30,13 +30,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context mContext;
     private ArrayList<Category> mCategories = new ArrayList<>();
     private int mSize;
-    private CloseActivityCallback mCallback;
+    private UIActionCallback mCallback;
 
-    public CategoryAdapter(Context context, ArrayList<Category> categories, CloseActivityCallback callback){
+    public CategoryAdapter(Context context, ArrayList<Category> categories, UIActionCallback callback){
         this(context, categories, categories.size(), callback);
     }
 
-    public CategoryAdapter(Context context, ArrayList<Category> categories, int size, CloseActivityCallback callback){
+    public CategoryAdapter(Context context, ArrayList<Category> categories, int size, UIActionCallback callback){
         mContext = context;
         mCategories = categories;
         mSize = size;
@@ -74,7 +74,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case VIEWTYPE_END:
                 return new CategoryEndViewHolder((LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent, false)));
             case VIEWTYPE_ITEM:
-                return new CategoryViewHolder((ItemCategoryBinding) DataBindingUtil.inflate(layoutInflater, R.layout.item_category, parent, false), mCallback);
+                return new CategoryViewHolder((ItemCategoryBinding) DataBindingUtil.inflate(layoutInflater, R.layout.item_category, parent, false), mCategories, mCallback);
             default:
                 return null;
         }
@@ -113,8 +113,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mItemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(v.getContext(), CategoryActivity.class);
-                    v.getContext().startActivity(i);
+                    CategoryDialog categoryDialog = new CategoryDialog((Activity)mContext, mCategories);
+                    categoryDialog.show();
                 }
             });
         }
