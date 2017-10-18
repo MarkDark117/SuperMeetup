@@ -4,6 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="bottom_bar_height">50dp</dimen>
+    <dimen name="toolbar_height">56dp</dimen>
 
     <dimen name="margin_mid">10dp</dimen>
     <dimen name="margin_normal">10dp</dimen>
@@ -12,4 +13,7 @@
     <dimen name="h2">14sp</dimen>
     <dimen name="p">12sp</dimen>
     <dimen name="p.small">10sp</dimen>
+
+    <dimen name="icon_default">36dp</dimen>
+    <dimen name="icon_small">24dp</dimen>
 </resources>

@@ -1,7 +1,13 @@
 package com.supermeetup.supermeetup.model;
 
+import android.databinding.BindingAdapter;
+import android.widget.ImageView;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.supermeetup.supermeetup.common.Util;
+
+import org.parceler.Parcel;
 
 import java.util.List;
 
@@ -27,7 +33,7 @@ import java.util.List;
  *          ]
  *  }
  */
-
+@Parcel
 public class Category {
 
     @SerializedName("id")
@@ -96,4 +102,5 @@ public class Category {
     public void setCategoryIds(List<Long> categoryIds) {
         this.categoryIds = categoryIds;
     }
+
 }

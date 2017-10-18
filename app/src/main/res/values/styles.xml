@@ -14,11 +14,18 @@
         <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
+    <style name="AppTheme.transparent" parent="Base.Theme.AppCompat.Light.Dialog">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+
+    </style>
+
     <style name="actionbar" parent="@android:style/Theme.Holo">
         <item name="android:textColorHint">@color/red100</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:editTextColor">@color/white</item>
-        <!-- your other custom widget styles -->
+        <item name="android:background">@drawable/bg_searchview</item>
     </style>
 
     <style name="div">
@@ -37,6 +44,7 @@
     <style name="div.h1" parent="div">
         <item name="android:textColor">@color/textH1</item>
         <item name="android:textSize">@dimen/h1</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="div.h2" parent="div">

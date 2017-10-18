@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.supermeetup.supermeetup.R;
-import com.supermeetup.supermeetup.adapter.NearbyCategoryAdapter;
+import com.supermeetup.supermeetup.adapter.CategoryAdapter;
 import com.supermeetup.supermeetup.model.Category;
 
 import java.util.ArrayList;
@@ -24,6 +24,6 @@ public class NearbyCategoryListViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(ArrayList<Category> categories){
-        mCategoryList.setAdapter(new NearbyCategoryAdapter(mCategoryList.getContext(), categories));
+        mCategoryList.setAdapter(new CategoryAdapter(mCategoryList.getContext(), categories, 7, null));
     }
 }

@@ -3,6 +3,8 @@ package com.supermeetup.supermeetup.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 /**
  * Created by yuxin on 10/13/17.
  * Sample: https://secure.meetup.com/meetup_api/console/?path=/find/topic_categories
@@ -15,7 +17,7 @@ import com.google.gson.annotations.SerializedName;
  *      "base_url": "https://secure.meetupstatic.com"
  *  }
  */
-
+@Parcel
 public class Photo {
 
     @SerializedName("id")

@@ -9,40 +9,29 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.SearchView;
 import android.view.MenuItem;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.supermeetup.supermeetup.MeetupApp;
+import com.supermeetup.supermeetup.fragment.NearbyFragment;
 import com.supermeetup.supermeetup.R;
-import com.supermeetup.supermeetup.adapter.NearbyAdapter;
 import com.supermeetup.supermeetup.common.LocationHelper;
 import com.supermeetup.supermeetup.common.Util;
 import com.supermeetup.supermeetup.databinding.ActivityHomeBinding;
-import com.supermeetup.supermeetup.model.Category;
-import com.supermeetup.supermeetup.model.Event;
-import com.supermeetup.supermeetup.network.MeetupClient;
-
-import java.util.ArrayList;
+import com.supermeetup.supermeetup.dialog.LoadingDialog;
 
 import io.fabric.sdk.android.Fabric;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
 
     private ActivityHomeBinding binding;
-    private MeetupClient meetupClient;
+    private int mCurrentTabId = R.id.navigation_nearby;
     private LocationHelper mLocationHelper;
     private Location mLocation;
-    private int mCurrentTabId = R.id.navigation_nearby;
-    private String mQuery = "";
+    private LoadingDialog mLoadingDialog;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -50,10 +39,56 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             mCurrentTabId = item.getItemId();
-            loadContent();
+            selectTab();
             return true;
         }
 
+    };
+
+    private boolean selectTab(){
+        boolean res = false;
+        Fragment fragment = null;
+        switch (mCurrentTabId){
+            case R.id.navigation_nearby:
+                fragment = NearbyFragment.getInstance(mLocation);
+                res = true;
+                break;
+            case R.id.navigation_find:
+                res = true;
+                break;
+            case R.id.navigation_new:
+                res = true;
+                break;
+            case R.id.navigation_shake:
+                res = true;
+                break;
+        }
+        if(fragment != null){
+            getSupportFragmentManager().beginTransaction().replace(
+                    R.id.container, fragment)
+                    .commit();
+        }
+        return res;
+    }
+
+    private LocationHelper.LocationResult locationResult = new LocationHelper.LocationResult() {
+
+        @Override
+        public void gotLocation(final Location location) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mLoadingDialog.dismiss();
+
+                    mLocation = location;
+
+                    Toast.makeText(HomeActivity.this, "Got Location",
+                            Toast.LENGTH_LONG).show();
+                    selectTab();
+                }
+            });
+
+        }
     };
 
     @Override
@@ -62,39 +97,19 @@ public class HomeActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         binding.homeNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         Util.disableBottomNavigationViewShiftMode(binding.homeNavigation);
-        binding.homeListview.setLayoutManager(new LinearLayoutManager(this));
-        binding.homeListview.setAdapter(new NearbyAdapter(this));
-
-        binding.homeSearchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                binding.homeNavigation.setSelectedItemId(R.id.navigation_find);
-                mCurrentTabId = R.id.navigation_find;
-                mQuery = binding.homeSearchview.getQuery().toString();
-                Util.hideSoftKeyboard(HomeActivity.this);
-                loadContent();
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-
-        meetupClient = MeetupApp.getRestClient(this);
 
         mLocationHelper = new LocationHelper();
+        mLoadingDialog = new LoadingDialog(this);
+
         checkPermission();
+
         Fabric.with(this, new Crashlytics());
     }
 
-    private void setCategoryList(ArrayList<Category> categories){
-        ((NearbyAdapter) binding.homeListview.getAdapter()).setCategories(categories);
-    }
-
-    private void setEventList(ArrayList<Event> events){
-        ((NearbyAdapter) binding.homeListview.getAdapter()).setEvents(events);
+    private void getLocation(){
+        mLoadingDialog.setMessage(Util.getString(this, R.string.load_location));
+        mLoadingDialog.show();
+        mLocationHelper.getLocation(this, locationResult);
     }
 
     private void checkPermission(){
@@ -107,14 +122,13 @@ public class HomeActivity extends AppCompatActivity {
                     Util.PERMISSIONREQUEST_ACCESS_LOCATION);
 
         }else{
-            mLocationHelper.getLocation(this, locationResult);
+            getLocation();
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions, @NonNull int[] grantResults) {
-
         switch (requestCode) {
             case Util.PERMISSIONREQUEST_ACCESS_LOCATION:
                 if (grantResults.length > 0) {
@@ -123,7 +137,7 @@ public class HomeActivity extends AppCompatActivity {
 
                     if(coarseLocation && fineLocation)
                     {
-                        mLocationHelper.getLocation(this, locationResult);
+                        getLocation();
                     } else {
                         //TODO
                     }
@@ -132,76 +146,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private void loadContent(){
-        switch (mCurrentTabId){
-            case R.id.navigation_nearby:
-                loadCategories();
-                loadRecommendEvents();
-                break;
-            case R.id.navigation_find:
-                loadEvents();
-                break;
-            case R.id.navigation_new:
-                break;
-            case R.id.navigation_shake:
-                break;
-        }
-    }
-
-    public LocationHelper.LocationResult locationResult = new LocationHelper.LocationResult() {
-
-        @Override
-        public void gotLocation(Location location) {
-            mLocation = location;
-            double Longitude = location.getLongitude();
-            double Latitude = location.getLatitude();
-
-            Toast.makeText(getApplicationContext(), "Got Location",
-                    Toast.LENGTH_LONG).show();
-            loadContent();
-        }
-    };
-
-    private void loadCategories(){
-        meetupClient.findTopicCategories(new Callback<ArrayList<Category>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
-                int statusCode = response.code();
-                ArrayList<Category> categories = response.body();
-                if(categories != null){
-                    setCategoryList(categories);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
-                // Log error here since request failed
-                Log.e("finderror", "Find topic categories request error: " + t.toString());
-            }
-        }, null, null, null, null);
-
-    }
-
-    private void loadRecommendEvents(){
-        meetupClient.recommendedEvents(new Callback<ArrayList<Event>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Event>> call, Response<ArrayList<Event>> response) {
-                int statusCode = response.code();
-                ArrayList<Event> events = response.body();
-                statusCode = 0;
-                if(events != null){
-                    setEventList(events);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Event>> call, Throwable t) {
-                // Log error here since request failed
-                Log.e("finderror", "Recommended event request error: " + t.toString());
-            }
-        }, Util.FIELDS_DEFAULT, mLocation.getLatitude(), mLocation.getLongitude(), null, null, null);
-    }
-
+/*
     private void loadEvents(){
         meetupClient.findEvent(new Callback<ArrayList<Event>>() {
             @Override
@@ -221,4 +166,5 @@ public class HomeActivity extends AppCompatActivity {
             }
         }, Util.FIELDS_DEFAULT, null, null, null, mQuery);
     }
+*/
 }

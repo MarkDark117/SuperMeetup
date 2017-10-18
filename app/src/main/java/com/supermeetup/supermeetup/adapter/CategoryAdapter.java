@@ -1,6 +1,8 @@
 package com.supermeetup.supermeetup.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.supermeetup.supermeetup.R;
+import com.supermeetup.supermeetup.activities.CategoryActivity;
+import com.supermeetup.supermeetup.callback.CloseActivityCallback;
+import com.supermeetup.supermeetup.databinding.ItemCategoryBinding;
 import com.supermeetup.supermeetup.model.Category;
-import com.supermeetup.supermeetup.viewholder.NearbyCategoryViewHolder;
+import com.supermeetup.supermeetup.viewholder.CategoryViewHolder;
 
 import java.util.ArrayList;
 
@@ -18,21 +23,31 @@ import java.util.ArrayList;
  * Created by yuxin on 10/14/17.
  */
 
-public class NearbyCategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEWTYPE_ITEM = 0;
     private static final int VIEWTYPE_END = 1;
 
     private Context mContext;
     private ArrayList<Category> mCategories = new ArrayList<>();
+    private int mSize;
+    private CloseActivityCallback mCallback;
 
-    public NearbyCategoryAdapter(Context context, ArrayList<Category> categories){
+    public CategoryAdapter(Context context, ArrayList<Category> categories, CloseActivityCallback callback){
+        this(context, categories, categories.size(), callback);
+    }
+
+    public CategoryAdapter(Context context, ArrayList<Category> categories, int size, CloseActivityCallback callback){
         mContext = context;
         mCategories = categories;
+        mSize = size;
+        mCallback = callback;
     }
 
     @Override
     public int getItemViewType(int position){
-        if(position < 7 ){
+        if(mSize == mCategories.size()){
+            return VIEWTYPE_ITEM;
+        }else if(position < 7 ){
             return VIEWTYPE_ITEM;
         }else{
             return VIEWTYPE_END;
@@ -43,6 +58,8 @@ public class NearbyCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public int getItemCount() {
         if(mCategories == null || mCategories.size() == 0){
             return 0;
+        }else if(mCategories.size() == mSize){
+            return mSize;
         }else if(mCategories.size() > 7){
             return 8;
         }else{
@@ -52,11 +69,12 @@ public class NearbyCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         switch (viewType){
             case VIEWTYPE_END:
-                return new EndViewHolder((LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent, false)));
+                return new CategoryEndViewHolder((LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent, false)));
             case VIEWTYPE_ITEM:
-                return new NearbyCategoryViewHolder((LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent, false)));
+                return new CategoryViewHolder((ItemCategoryBinding) DataBindingUtil.inflate(layoutInflater, R.layout.item_category, parent, false), mCallback);
             default:
                 return null;
         }
@@ -68,28 +86,37 @@ public class NearbyCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         int viewType = holder.getItemViewType();
         switch (viewType){
             case VIEWTYPE_ITEM:
-                ((NearbyCategoryViewHolder) holder).bind(mCategories.get(position));
+                ((CategoryViewHolder) holder).bind(mCategories.get(position));
                 break;
             case VIEWTYPE_END:
-                ((EndViewHolder) holder).bind();
+                ((CategoryEndViewHolder) holder).bind();
                 break;
 
         }
     }
 
-    class EndViewHolder extends RecyclerView.ViewHolder{
+    class CategoryEndViewHolder extends RecyclerView.ViewHolder{
         private ImageView mImage;
         private TextView mTitle;
+        private View mItemView;
 
-        public EndViewHolder(View itemView) {
+        public CategoryEndViewHolder(View itemView) {
             super(itemView);
             mImage = (ImageView) itemView.findViewById(R.id.category_image);
             mTitle = (TextView) itemView.findViewById(R.id.category_title);
+            mItemView = itemView;
         }
 
         public void bind(){
             mImage.setImageResource(R.mipmap.ic_more);
             mTitle.setText(R.string.more);
+            mItemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(v.getContext(), CategoryActivity.class);
+                    v.getContext().startActivity(i);
+                }
+            });
         }
     }
 }
