@@ -57,6 +57,10 @@
 
         </LinearLayout>
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recommendevents_list"
+            style="@style/div"/>
+
     </LinearLayout>
 
 </layout>

@@ -82,7 +82,9 @@ public class NearbyFragment extends Fragment {
     }
 
     public void setLocation(Location location){
-        mLocation = location;
+        if(location != null) {
+            mLocation = location;
+        }
     }
 
     private void loadCategories(){

@@ -79,9 +79,8 @@ public class HomeActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     mLoadingDialog.dismiss();
-
                     mLocation = location;
-
+                    Util.writeLocation(HomeActivity.this, Util.KEY_LOCATION, mLocation);
                     Toast.makeText(HomeActivity.this, "Got Location",
                             Toast.LENGTH_LONG).show();
                     selectTab();

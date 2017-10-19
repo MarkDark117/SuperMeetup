@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.databinding.BindingAdapter;
+import android.location.Location;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
@@ -30,8 +31,10 @@ public class Util {
 
     public static final int PERMISSIONREQUEST_ACCESS_LOCATION = 0;
 
+    public static final String SHAREDPREFERENCE = "supermeetupsharedpreferences";
+
     public static final String KEY_ATTEMPTINGLOGIN = "attempinglogin";
-    public static final String KEY_CATEGORIES = "categories";
+    public static final String KEY_LOCATION = "location";
 
     public static final String FIELDS_DEFAULT = "event_hosts, group_category, group_photo";
     public static final float RADIUS_DEFAULT = 30.0f;
@@ -91,28 +94,32 @@ public class Util {
         return id;
     }
 
-    public static void writeBoolean(Activity activity, String key, boolean value){
-        SharedPreferences preferences = activity.getPreferences(Context.MODE_PRIVATE);
+    public static void writeBoolean(Context context, String key, boolean value){
+        SharedPreferences preferences = context.getSharedPreferences(SHAREDPREFERENCE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(key, value);
         editor.commit();
     }
 
-    public static boolean readBoolean(Activity activity, String key){
-        SharedPreferences preferences = activity.getPreferences(Context.MODE_PRIVATE);
+    public static boolean readBoolean(Context context, String key){
+        SharedPreferences preferences = context.getSharedPreferences(SHAREDPREFERENCE, Context.MODE_PRIVATE);
         return preferences.getBoolean(key, false);
     }
 
-    public static void writeString(Activity activity, String key, String value){
-        SharedPreferences preferences = activity.getPreferences(Context.MODE_PRIVATE);
+    public static void writeLocation(Context context, String key, Location location){
+        SharedPreferences preferences = context.getSharedPreferences(SHAREDPREFERENCE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(key, value);
+        editor.putString(key+"_lat", location.getLatitude()+"");
+        editor.putString(key+"_lot", location.getLatitude()+"");
         editor.commit();
     }
 
-    public static String readString(Activity activity, String key){
-        SharedPreferences preferences = activity.getPreferences(Context.MODE_PRIVATE);
-        return preferences.getString(key, "");
+    public static Location readLocation(Context context, String key){
+        SharedPreferences preferences = context.getSharedPreferences(SHAREDPREFERENCE, Context.MODE_PRIVATE);
+        Location location = new Location("");
+        location.setLatitude(Double.parseDouble(preferences.getString(key+"_lat", "0.0")));
+        location.setLatitude(Double.parseDouble(preferences.getString(key+"_lot", "0.0")));
+        return location;
     }
 
     public static void hideSoftKeyboard(Activity activity) {
