@@ -1,4 +1,4 @@
-package com.supermeetup.supermeetup.viewholder;
+package com.supermeetup.supermeetup.adapter.viewholder;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;

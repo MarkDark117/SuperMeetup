@@ -33,4 +33,9 @@
     <string name="load_data">Loading Data...</string>
     <string name="load_category">Loading Categories...</string>
     <string name="load_event">Loading Events...</string>
+
+    <!--event-->
+    <string name="no_location">Haven\'t set location yet.</string>
+    <string name="private_location">Location is only visible to members.</string>
+
 </resources>

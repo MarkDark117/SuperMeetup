@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.supermeetup.supermeetup.MeetupApp;
 import com.supermeetup.supermeetup.R;
-import com.supermeetup.supermeetup.adapter.NearbyAdapter;
+import com.supermeetup.supermeetup.adapter.CategoryAndEventAdapter;
 import com.supermeetup.supermeetup.common.Util;
 import com.supermeetup.supermeetup.databinding.FragmentNearbyBinding;
 import com.supermeetup.supermeetup.dialog.LoadingDialog;
@@ -57,7 +57,7 @@ public class NearbyFragment extends Fragment {
         View view = mNearbyBinding.getRoot();
         mLoadingDialog = new LoadingDialog(getActivity());
         mNearbyBinding.nearbyListview.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mNearbyBinding.nearbyListview.setAdapter(new NearbyAdapter(getActivity()));
+        mNearbyBinding.nearbyListview.setAdapter(new CategoryAndEventAdapter(getActivity()));
 
         mNearbyBinding.nearbySearchlayout.searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -135,10 +135,10 @@ public class NearbyFragment extends Fragment {
 
 
     private void setCategoryList(ArrayList<Category> categories){
-        ((NearbyAdapter) mNearbyBinding.nearbyListview.getAdapter()).setCategories(categories);
+        ((CategoryAndEventAdapter) mNearbyBinding.nearbyListview.getAdapter()).setCategories(categories);
     }
 
     private void setEventList(ArrayList<Event> events){
-        ((NearbyAdapter) mNearbyBinding.nearbyListview.getAdapter()).setEvents(events);
+        ((CategoryAndEventAdapter) mNearbyBinding.nearbyListview.getAdapter()).setEvents(events, true);
     }
 }

@@ -8,13 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
 import com.supermeetup.supermeetup.MeetupApp;
 import com.supermeetup.supermeetup.R;
-import com.supermeetup.supermeetup.adapter.NearbyAdapter;
-import com.supermeetup.supermeetup.common.LocationHelper;
+import com.supermeetup.supermeetup.adapter.CategoryAndEventAdapter;
 import com.supermeetup.supermeetup.common.Util;
 import com.supermeetup.supermeetup.databinding.ActivityRecommendeventsBinding;
 import com.supermeetup.supermeetup.dialog.CategoryDialog;
@@ -27,7 +24,6 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
-import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,7 +49,7 @@ public class RecommendEventsActivity extends AppCompatActivity {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_recommendevents);
         mBinding.recommendeventsList.setLayoutManager(new LinearLayoutManager(this));
         mLoadingDialog = new LoadingDialog(this);
-        mBinding.recommendeventsList.setAdapter(new NearbyAdapter(this));
+        mBinding.recommendeventsList.setAdapter(new CategoryAndEventAdapter(this));
         updateUI(getIntent());
         mBinding.recommendeventsBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +79,7 @@ public class RecommendEventsActivity extends AppCompatActivity {
     }
 
     private void setEventList(ArrayList<Event> events){
-        ((NearbyAdapter) mBinding.recommendeventsList.getAdapter()).setEvents(events);
+        ((CategoryAndEventAdapter) mBinding.recommendeventsList.getAdapter()).setEvents(events, false);
         mBinding.recommendeventsList.scrollToPosition(0);
     }
 

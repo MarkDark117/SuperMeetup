@@ -15,7 +15,7 @@ import com.supermeetup.supermeetup.callback.UIActionCallback;
 import com.supermeetup.supermeetup.databinding.ItemCategoryBinding;
 import com.supermeetup.supermeetup.dialog.CategoryDialog;
 import com.supermeetup.supermeetup.model.Category;
-import com.supermeetup.supermeetup.viewholder.CategoryViewHolder;
+import com.supermeetup.supermeetup.adapter.viewholder.CategoryViewHolder;
 
 import java.util.ArrayList;
 

@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.supermeetup.supermeetup.fragment.FindFragment;
 import com.supermeetup.supermeetup.fragment.NearbyFragment;
 import com.supermeetup.supermeetup.R;
 import com.supermeetup.supermeetup.common.LocationHelper;
@@ -54,6 +55,7 @@ public class HomeActivity extends AppCompatActivity {
                 res = true;
                 break;
             case R.id.navigation_find:
+                fragment = FindFragment.getInstance(mLocation);
                 res = true;
                 break;
             case R.id.navigation_new:
@@ -145,25 +147,4 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-/*
-    private void loadEvents(){
-        meetupClient.findEvent(new Callback<ArrayList<Event>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Event>> call, Response<ArrayList<Event>> response) {
-                int statusCode = response.code();
-                ArrayList<Event> events = response.body();
-                if(events != null){
-                    setCategoryList(null);
-                    setEventList(events);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Event>> call, Throwable t) {
-                // Log error here since request failed
-                Log.e("finderror", "Find event request error: " + t.toString());
-            }
-        }, Util.FIELDS_DEFAULT, null, null, null, mQuery);
-    }
-*/
 }
