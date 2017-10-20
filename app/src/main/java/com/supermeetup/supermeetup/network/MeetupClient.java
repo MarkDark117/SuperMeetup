@@ -89,8 +89,8 @@ public class MeetupClient extends OAuthBaseClient {
         };
 
         // Add the interceptor to OkHttpClient
-        OkHttpClient.Builder builder = new OkHttpClient.Builder().readTimeout(60, TimeUnit.SECONDS)
-                .connectTimeout(60, TimeUnit.SECONDS);
+        OkHttpClient.Builder builder = new OkHttpClient.Builder().readTimeout(15, TimeUnit.SECONDS)
+                .connectTimeout(15, TimeUnit.SECONDS);
         builder.interceptors().add(interceptor);
         okHttpClient = builder.build();
 
