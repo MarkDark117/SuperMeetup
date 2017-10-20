@@ -3,6 +3,7 @@ package com.supermeetup.supermeetup.network;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.github.scribejava.core.builder.api.BaseApi;
@@ -10,12 +11,14 @@ import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.loopj.android.http.RequestParams;
 import com.supermeetup.supermeetup.model.Category;
 import com.supermeetup.supermeetup.model.Event;
+import com.supermeetup.supermeetup.model.OpenEvent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -31,13 +34,16 @@ public class MeetupClient extends OAuthBaseClient {
 
     private static final BaseApi REST_API_INSTANCE = MeetupApi20.instance();
     private static final String REST_URL = "https://api.meetup.com";
+    private static final String STREAM_URL = "http://stream.meetup.com";
     private static final String REST_CONSUMER_KEY = "tsnbip354bn734c40plu1nnif3";
     private static final String REST_CONSUMER_SECRET = "573r6lbbiq32q8619f0o2o7tkv";
     private static final String CALLBACK_URL = "meetupoauth://supermeetup.com";
 
-    private Retrofit retrofit;
+    Retrofit retrofit;
+    Retrofit streamRetrofit;
 
     private MeetupEndpointInterface apiService;
+    private MeetupStreamApiInterface streamService;
     private OkHttpClient okHttpClient;
 
     public MeetupClient(Context context) {
@@ -69,10 +75,11 @@ public class MeetupClient extends OAuthBaseClient {
                             // Resend request
                             Request.Builder newBuilder = chain.request().newBuilder();
                             setAuthHeader(newBuilder, ((OAuth2AccessToken) MeetupClient.this.client.getAccessToken()).getAccessToken().toString()); //set auth token to updated
+
                             return chain.proceed(newBuilder.build()); //repeat request with new token
 
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Log.e("Refresh access token:", e.getMessage());
                         }
                     }
                 }
@@ -82,17 +89,19 @@ public class MeetupClient extends OAuthBaseClient {
         };
 
         // Add the interceptor to OkHttpClient
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        OkHttpClient.Builder builder = new OkHttpClient.Builder().readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS);
         builder.interceptors().add(interceptor);
         okHttpClient = builder.build();
 
-        retrofit = new Retrofit.Builder()
-                .baseUrl(REST_URL)
+        Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpClient)
-                .build();
+                .client(okHttpClient);
+        retrofit = retrofitBuilder.baseUrl(REST_URL).build();
 
         apiService = retrofit.create(MeetupEndpointInterface.class);
+        streamRetrofit = retrofitBuilder.baseUrl(STREAM_URL).build();
+        streamService = streamRetrofit.create(MeetupStreamApiInterface.class);
     }
 
     private void setAuthHeader(Request.Builder builder, String access_token) {
@@ -163,6 +172,12 @@ public class MeetupClient extends OAuthBaseClient {
                                   @Nullable Boolean self_groups,
                                   @Nullable Integer topic_category) {
         Call<ArrayList<Event>> call = apiService.recommendedEvents(fields, lat, lon, page, self_groups, topic_category);
+        call.enqueue(callback);
+    }
+
+    public void streamOpenEvents(@NonNull Callback<OpenEvent> callback,
+                                 @Nullable Long since_mtime) {
+        Call<OpenEvent> call = streamService.openEvents(since_mtime);
         call.enqueue(callback);
     }
 }

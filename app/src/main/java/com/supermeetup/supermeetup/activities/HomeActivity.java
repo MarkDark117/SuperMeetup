@@ -2,24 +2,62 @@ package com.supermeetup.supermeetup.activities;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.supermeetup.supermeetup.MeetupApp;
 import com.supermeetup.supermeetup.R;
 import com.supermeetup.supermeetup.databinding.ActivityHomeBinding;
+import com.supermeetup.supermeetup.model.OpenEvent;
 import com.supermeetup.supermeetup.network.MeetupClient;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
 
     private ActivityHomeBinding binding;
     private MeetupClient meetupClient;
+    private Handler handler = new Handler();
+    private Long lastMTime;
+    private Runnable streamOpenEvent = new Runnable() {
+        @Override
+        public void run() {
+            meetupClient.streamOpenEvents(streamOpenEventCallback, lastMTime);
+            // Repeat this the same runnable code block again another .05 seconds
+            // 'this' is referencing the Runnable object
+            handler.postDelayed(this, 500);
+        }
+    };
+
+    private Callback<OpenEvent> streamOpenEventCallback = new Callback<OpenEvent>() {
+        @Override
+        public void onResponse(Call<OpenEvent> call, Response<OpenEvent> response) {
+            //int statusCode = response.code();
+            if (response.isSuccessful()) {
+                OpenEvent openEvent = response.body();
+                // Update mtime
+                lastMTime = openEvent.getMtime() + 1;
+                processNewOpenEvent(openEvent);
+            }
+        }
+
+        @Override
+        public void onFailure(Call<OpenEvent> call, Throwable t) {
+            // Log error here since request failed
+            Log.e("stream open events", "Recommended event request error: " + t.toString());
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         meetupClient = MeetupApp.getRestClient(this);
-
+        handler.post(streamOpenEvent);
         /*
         // test findEvent
         meetupClient.findEvent(new Callback<ArrayList<Event>>() {
@@ -70,5 +108,13 @@ public class HomeActivity extends AppCompatActivity {
             }
         }, null, null, null, null, null, null);
         */
+    }
+
+    private void processNewOpenEvent(@NonNull OpenEvent openEvent) {
+        // Do something with openEvent
+    }
+
+    private void stopOpenEventStream() {
+        handler.removeCallbacks(streamOpenEvent);
     }
 }
