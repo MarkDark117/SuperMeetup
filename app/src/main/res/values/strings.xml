@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">SuperMeetup</string>
     <string name="title_activity_login">Sign in for Super Meet</string>
+    <string name="more">More</string>
+    <string name="login">Login</string>
+    <string name="search_hint">Search...</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -25,7 +28,14 @@
     <string name="navigation_new">New</string>
     <string name="navigation_shake">Shake</string>
 
-    <string name="more">More</string>
-    <string name="login">Login</string>
-    <string name="search_hint">Search...</string>
+    <!--Loading dialog -->
+    <string name="load_location">Loading Location...</string>
+    <string name="load_data">Loading Data...</string>
+    <string name="load_category">Loading Categories...</string>
+    <string name="load_event">Loading Events...</string>
+
+    <!--event-->
+    <string name="no_location">Haven\'t set location yet.</string>
+    <string name="private_location">Location is only visible to members.</string>
+
 </resources>

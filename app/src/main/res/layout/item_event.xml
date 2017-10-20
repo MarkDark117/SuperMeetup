@@ -1,50 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/div"
-    android:layout_height="110dp"
-    android:layout_marginBottom="1dp"
-    android:gravity="bottom">
-
-    <ImageView
-        android:id="@+id/event_image"
-        style="@style/div"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/logo"/>
-
+<layout xmlns:android="http://schemas.android.com/apk/res/android" >
     <RelativeLayout
         style="@style/div"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:gravity="left|center_vertical"
-        android:padding="@dimen/margin_normal"
-        android:background="#efffffff">
+        android:layout_height="@dimen/event_height"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/event_image"
+            style="@style/div"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/logo"/>
+
+        <RelativeLayout
+            style="@style/div.vlist"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="left|center_vertical"
+            android:paddingTop="@dimen/margin_mid"
+            android:paddingBottom="@dimen/margin_mid"
+            android:paddingLeft="@dimen/margin_normal"
+            android:paddingRight="@dimen/margin_normal"
+            android:background="#efffffff">
+
+            <LinearLayout
+                android:id="@+id/event_address_layout"
+                style="@style/div.hlist"
+                android:gravity="top"
+                android:layout_alignParentBottom="true" >
+
+                <ImageView
+                    android:layout_width="@dimen/icon_tiny"
+                    android:layout_height="@dimen/icon_tiny"
+                    android:src="@mipmap/ic_location"
+                    android:tint="@color/colorPrimary"
+                    android:layout_marginRight="@dimen/margin_mid"/>
+                <TextView
+                    android:id="@+id/event_address"
+                    android:lines="1"
+                    android:ellipsize="end"
+                    android:gravity="top"
+                    style="@style/div.p"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/event_name"
+                style="@style/div.h1"
+                android:layout_alignParentTop="true"
+                android:gravity="top"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:text="title"/>
+
+            <LinearLayout
+                style="@style/div.hlist"
+                android:gravity="bottom"
+                android:layout_marginBottom="@dimen/margin_mid"
+                android:layout_below="@id/event_name"
+                android:layout_above="@id/event_address_layout">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_tiny"
+                    android:layout_height="@dimen/icon_tiny"
+                    android:src="@mipmap/ic_group"
+                    android:tint="@color/teal700"
+                    android:layout_marginRight="@dimen/margin_mid"/>
+                <TextView
+                    android:id="@+id/event_group"
+                    style="@style/div.h2"
+                    android:lines="1"
+                    android:ellipsize="end"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
         <TextView
-            android:id="@+id/event_address"
-            android:layout_alignParentBottom="true"
-            style="@style/div.p"/>
-
-        <TextView
-            android:id="@+id/event_group"
-            android:layout_above="@id/event_address"
-            style="@style/div.h2"/>
-
-        <TextView
-            android:id="@+id/event_name"
-            style="@style/div.h1"
-            android:layout_alignParentTop="true"
-            android:layout_above="@id/event_group"
-            android:gravity="center_vertical"
-            android:lines="2"
-            android:ellipsize="end"/>
+            android:id="@+id/event_divider"
+            style="@style/div.divider"
+            android:layout_alignParentTop="true"/>
 
     </RelativeLayout>
-
-    <TextView
-        style="@style/div.divider"
-        android:layout_alignParentTop="true"/>
-
-</RelativeLayout>
+</layout>

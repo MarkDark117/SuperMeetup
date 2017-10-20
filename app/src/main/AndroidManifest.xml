@@ -19,8 +19,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".activities.HomeActivity"></activity>
-
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="1012beeb484a1c77da024d0facdd5d6d49a1e59a" />
@@ -43,6 +41,15 @@
                     android:host="@string/intent_host" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activities.HomeActivity"
+            android:launchMode="singleTask"></activity>
+
+        <activity
+            android:name=".activities.RecommendEventsActivity"
+            android:launchMode="singleTask"></activity>
+
     </application>
 
 </manifest>

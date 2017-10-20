@@ -3,6 +3,8 @@ package com.supermeetup.supermeetup.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 /**
  * Created by yuxin on 10/13/17.
  * Sample:
@@ -33,7 +35,7 @@ import com.google.gson.annotations.SerializedName;
  *      }
  *  }
  */
-
+@Parcel
 public class Group {
 
     @SerializedName("created")

@@ -3,18 +3,24 @@ package com.supermeetup.supermeetup.common;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.databinding.BindingAdapter;
+import android.location.Location;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 
+import com.supermeetup.supermeetup.model.Category;
 import com.supermeetup.supermeetup.model.EventHost;
 import com.supermeetup.supermeetup.model.Venue;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
+import org.parceler.Parcels;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -25,9 +31,17 @@ public class Util {
 
     public static final int PERMISSIONREQUEST_ACCESS_LOCATION = 0;
 
-    public static final String KEY_ATTEMPTINGLOGIN = "attempinglogin";
+    public static final String SHAREDPREFERENCE = "supermeetupsharedpreferences";
 
-    public static final String FIELDS_DEFAULT = "group_category, group_photo";
+    public static final String KEY_ATTEMPTINGLOGIN = "attempinglogin";
+    public static final String KEY_LOCATION = "location";
+
+    public static final String FIELDS_DEFAULT = "event_hosts, group_category, group_photo";
+    public static final float RADIUS_DEFAULT = 30.0f;
+
+    public static final String EXTRA_CATEGORY = "category";
+    public static final String EXTRA_CATEGORYLIST = "categorylist";
+    public static final String EXTRA_QUERY = "query";
 
     public static void disableBottomNavigationViewShiftMode(BottomNavigationView view) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
@@ -51,6 +65,14 @@ public class Util {
         }
     }
 
+    public static String getString(Context context, int resId){
+        return context.getResources().getString(resId);
+    }
+
+    public static int getColor(Context context, int resId){
+        return context.getResources().getColor(resId);
+    }
+
     public static int getResourceId(Context context, String pVariableName, String pResourcename)
     {
         try {
@@ -62,23 +84,43 @@ public class Util {
     }
 
     public static int getMipMapResourceId(Context context, String variableName){
-        int id = getResourceId(context, variableName, "mipmap");
+        return getResourceId(context, variableName, "mipmap");
+    }
+
+    public static int getCategoryIcon(Context context, long categoryId){
+        int id = getMipMapResourceId(context, "ic_c" + categoryId);
         if(id == -1){
-            id = getResourceId(context, "ic_c", "mipmap");
+            id = getMipMapResourceId(context, "ic_c");
         }
         return id;
     }
 
-    public static void writeBoolean(Activity activity, String key, boolean value){
-        SharedPreferences preferences = activity.getPreferences(Context.MODE_PRIVATE);
+    public static void writeBoolean(Context context, String key, boolean value){
+        SharedPreferences preferences = context.getSharedPreferences(SHAREDPREFERENCE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(key, value);
         editor.commit();
     }
 
-    public static boolean readBoolean(Activity activity, String key){
-        SharedPreferences preferences = activity.getPreferences(Context.MODE_PRIVATE);
+    public static boolean readBoolean(Context context, String key){
+        SharedPreferences preferences = context.getSharedPreferences(SHAREDPREFERENCE, Context.MODE_PRIVATE);
         return preferences.getBoolean(key, false);
+    }
+
+    public static void writeLocation(Context context, String key, Location location){
+        SharedPreferences preferences = context.getSharedPreferences(SHAREDPREFERENCE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(key+"_lat", location.getLatitude()+"");
+        editor.putString(key+"_lot", location.getLatitude()+"");
+        editor.commit();
+    }
+
+    public static Location readLocation(Context context, String key){
+        SharedPreferences preferences = context.getSharedPreferences(SHAREDPREFERENCE, Context.MODE_PRIVATE);
+        Location location = new Location("");
+        location.setLatitude(Double.parseDouble(preferences.getString(key+"_lat", "0.0")));
+        location.setLatitude(Double.parseDouble(preferences.getString(key+"_lot", "0.0")));
+        return location;
     }
 
     public static void hideSoftKeyboard(Activity activity) {
@@ -89,6 +131,12 @@ public class Util {
                 inputManager.hideSoftInputFromInputMethod(activity.getCurrentFocus().getWindowToken(), 0);
             }
         }
+    }
+
+
+    @BindingAdapter({"iconid"})
+    public static void setIconId(ImageView view, long iconid) {
+        view.setImageResource(Util.getCategoryIcon(view.getContext(), iconid));
     }
 
 }
