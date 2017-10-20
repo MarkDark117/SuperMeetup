@@ -1,5 +1,6 @@
 package com.supermeetup.supermeetup.fragment;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.location.Location;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.supermeetup.supermeetup.MeetupApp;
 import com.supermeetup.supermeetup.R;
+import com.supermeetup.supermeetup.activities.HomeActivity;
 import com.supermeetup.supermeetup.adapter.CategoryAndEventAdapter;
 import com.supermeetup.supermeetup.common.Util;
 import com.supermeetup.supermeetup.databinding.FragmentNearbyBinding;
@@ -62,11 +64,10 @@ public class NearbyFragment extends Fragment {
         mNearbyBinding.nearbySearchlayout.searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-//                binding.homeNavigation.setSelectedItemId(R.id.navigation_find);
-//                mCurrentTabId = R.id.navigation_find;
-//                mQuery = binding.homeSearchview.getQuery().toString();
-//                Util.hideSoftKeyboard(HomeActivity.this);
-//                loadContent();
+                String sQuery = mNearbyBinding.nearbySearchlayout.searchview.getQuery().toString();
+                Intent i = new Intent(getActivity(), HomeActivity.class);
+                i.putExtra(Util.EXTRA_QUERY, sQuery);
+                getActivity().startActivity(i);
                 return true;
             }
 

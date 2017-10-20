@@ -42,7 +42,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.HomeActivity"></activity>
+        <activity
+            android:name=".activities.HomeActivity"
+            android:launchMode="singleTask"></activity>
 
         <activity
             android:name=".activities.RecommendEventsActivity"

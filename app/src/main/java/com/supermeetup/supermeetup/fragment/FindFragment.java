@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,12 +35,14 @@ import retrofit2.Response;
 public class FindFragment extends Fragment {
     private static FindFragment mFragment;
     private Location mLocation;
+    private String mQuery;
 
-    public static FindFragment getInstance(Location location){
+    public static FindFragment getInstance(Location location, String query){
         if(mFragment == null){
             mFragment = new FindFragment();
         }
         mFragment.setLocation(location);
+        mFragment.setQuery(query);
         return mFragment;
     }
 
@@ -49,10 +52,13 @@ public class FindFragment extends Fragment {
         }
     }
 
+    public void setQuery(String query){
+        mQuery = query;
+    }
+
     private MeetupClient meetupClient;
     private FragmentFindBinding mFindBinding;
     private LoadingDialog mLoadingDialog;
-    private String mQuery;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,15 +69,16 @@ public class FindFragment extends Fragment {
         mLoadingDialog = new LoadingDialog(getActivity());
         mFindBinding.findList.setLayoutManager(new LinearLayoutManager(getActivity()));
         mFindBinding.findList.setAdapter(new EventAdapter());
+        if(!TextUtils.isEmpty(mQuery)){
+            mFindBinding.findSearchlayout.searchview.setQuery(mQuery, true);
+        }
 
         mFindBinding.findSearchlayout.searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-//                binding.homeNavigation.setSelectedItemId(R.id.navigation_find);
-//                mCurrentTabId = R.id.navigation_find;
-//                mQuery = binding.homeSearchview.getQuery().toString();
-//                Util.hideSoftKeyboard(HomeActivity.this);
-//                loadContent();
+                mQuery = mFindBinding.findSearchlayout.searchview.getQuery().toString();
+                mFindBinding.findSearchlayout.searchview.clearFocus();
+                loadEvents();
                 return true;
             }
 
@@ -87,6 +94,7 @@ public class FindFragment extends Fragment {
     }
 
     private void loadEvents(){
+        Util.hideSoftKeyboard(getActivity());
         mLoadingDialog.show();
         meetupClient.findEvent(new Callback<ArrayList<Event>>() {
             @Override

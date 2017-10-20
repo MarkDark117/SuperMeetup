@@ -1,6 +1,7 @@
 package com.supermeetup.supermeetup.activities;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.location.Location;
@@ -12,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -28,11 +30,12 @@ import io.fabric.sdk.android.Fabric;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private ActivityHomeBinding binding;
+    private ActivityHomeBinding mHomeActivityBinding;
     private int mCurrentTabId = R.id.navigation_nearby;
     private LocationHelper mLocationHelper;
     private Location mLocation;
     private LoadingDialog mLoadingDialog;
+    private String mQuery;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -55,7 +58,7 @@ public class HomeActivity extends AppCompatActivity {
                 res = true;
                 break;
             case R.id.navigation_find:
-                fragment = FindFragment.getInstance(mLocation);
+                fragment = FindFragment.getInstance(mLocation, mQuery);
                 res = true;
                 break;
             case R.id.navigation_new:
@@ -95,9 +98,9 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
-        binding.homeNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        Util.disableBottomNavigationViewShiftMode(binding.homeNavigation);
+        mHomeActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_home);
+        mHomeActivityBinding.homeNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        Util.disableBottomNavigationViewShiftMode(mHomeActivityBinding.homeNavigation);
 
         mLocationHelper = new LocationHelper();
         mLoadingDialog = new LoadingDialog(this);
@@ -147,4 +150,12 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onNewIntent(Intent intent){
+        super.onNewIntent(intent);
+        if(intent.hasExtra(Util.EXTRA_QUERY)){
+            mQuery = intent.getStringExtra(Util.EXTRA_QUERY);
+            mHomeActivityBinding.homeNavigation.setSelectedItemId(R.id.navigation_find);
+        }
+    }
 }

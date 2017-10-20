@@ -41,6 +41,7 @@ public class Util {
 
     public static final String EXTRA_CATEGORY = "category";
     public static final String EXTRA_CATEGORYLIST = "categorylist";
+    public static final String EXTRA_QUERY = "query";
 
     public static void disableBottomNavigationViewShiftMode(BottomNavigationView view) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
