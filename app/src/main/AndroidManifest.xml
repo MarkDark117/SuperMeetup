@@ -23,6 +23,10 @@
             android:name="io.fabric.ApiKey"
             android:value="1012beeb484a1c77da024d0facdd5d6d49a1e59a" />
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAYOnzaUL2s6Pmf2DLWo4qTt7a1X3A1k-k" />
+
         <activity
             android:name=".activities.LoginActivity"
             android:theme="@style/AppTheme.login">

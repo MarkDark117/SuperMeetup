@@ -11,8 +11,6 @@ import android.view.View;
 
 import com.supermeetup.supermeetup.MeetupApp;
 import com.supermeetup.supermeetup.R;
-import com.supermeetup.supermeetup.adapter.CategoryAdapter;
-import com.supermeetup.supermeetup.adapter.CategoryAndEventAdapter;
 import com.supermeetup.supermeetup.adapter.EventAdapter;
 import com.supermeetup.supermeetup.common.Util;
 import com.supermeetup.supermeetup.databinding.ActivityRecommendeventsBinding;
@@ -110,7 +108,7 @@ public class RecommendEventsActivity extends AppCompatActivity {
                 mLoadingDialog.dismiss();
                 Log.e("finderror", "Recommended event request error: " + t.toString());
             }
-        }, Util.FIELDS_DEFAULT, mLocation.getLatitude(), mLocation.getLongitude(), null, null, (int)mCurrentCategory.getId());
+        }, Util.DEFAULT_FIELDS, mLocation.getLatitude(), mLocation.getLongitude(), null, null, (int)mCurrentCategory.getId());
     }
 
 }
