@@ -55,6 +55,7 @@ public class HomeActivity extends AppCompatActivity {
         switch (mCurrentTabId){
             case R.id.navigation_nearby:
                 fragment = NearbyFragment.getInstance(mLocation);
+                ((NearbyFragment) fragment).setQuery(mQuery);
                 res = true;
                 break;
             case R.id.navigation_find:
@@ -148,6 +149,14 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 break;
         }
+    }
+
+    public String getQuery(){
+        return mQuery;
+    }
+
+    public void setQuery(String query){
+        mQuery = query;
     }
 
     @Override

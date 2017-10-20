@@ -12,7 +12,9 @@ import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.supermeetup.supermeetup.model.Category;
+import com.supermeetup.supermeetup.model.Event;
 import com.supermeetup.supermeetup.model.EventHost;
 import com.supermeetup.supermeetup.model.Venue;
 
@@ -24,24 +26,28 @@ import org.parceler.Parcels;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
 public class Util {
 
-    public static final int PERMISSIONREQUEST_ACCESS_LOCATION = 0;
+    public static final int     PERMISSIONREQUEST_ACCESS_LOCATION = 0;
 
-    public static final String SHAREDPREFERENCE = "supermeetupsharedpreferences";
+    public static final String  SHAREDPREFERENCE = "supermeetupsharedpreferences";
 
-    public static final String KEY_ATTEMPTINGLOGIN = "attempinglogin";
-    public static final String KEY_LOCATION = "location";
+    public static final String  KEY_ATTEMPTINGLOGIN = "attempinglogin";
+    public static final String  KEY_LOCATION = "location";
 
-    public static final String FIELDS_DEFAULT = "event_hosts, group_category, group_photo";
-    public static final float RADIUS_DEFAULT = 30.0f;
+    public static final String  DEFAULT_FIELDS = "event_hosts, group_category, group_photo";
+    public static final float   DEFAULT_RADIUS = 30.0f;
+    public static final int     DEFAULT_ZOOM = 10;
 
-    public static final String EXTRA_CATEGORY = "category";
-    public static final String EXTRA_CATEGORYLIST = "categorylist";
-    public static final String EXTRA_QUERY = "query";
+    public static final String  EXTRA_CATEGORY = "category";
+    public static final String  EXTRA_CATEGORYLIST = "categorylist";
+    public static final String  EXTRA_QUERY = "query";
 
     public static void disableBottomNavigationViewShiftMode(BottomNavigationView view) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
@@ -131,6 +137,44 @@ public class Util {
                 inputManager.hideSoftInputFromInputMethod(activity.getCurrentFocus().getWindowToken(), 0);
             }
         }
+    }
+
+    public static LatLng getVenueLatLng(Venue venue){
+        if(venue.isVisible()){
+            return new LatLng(venue.getLat(), venue.getLon());
+        }
+
+        return null;
+    }
+
+    public static LatLng getVenueLatLng(Event event){
+        if(event.getVenue() != null){
+            return getVenueLatLng(event.getVenue());
+        }
+        return null;
+    }
+
+    public static ArrayList<Event> sortLocations(ArrayList<Event> events, final LatLng target) {
+        Comparator comp = new Comparator<Event>() {
+            @Override
+            public int compare(Event e1, Event e2) {
+                float[] result1 = new float[3];
+                LatLng location1 = getVenueLatLng(e1);
+                Location.distanceBetween(target.latitude, target.longitude, location1.latitude, location1.longitude, result1);
+                Float distance1 = result1[0];
+
+                float[] result2 = new float[3];
+                LatLng location2 = getVenueLatLng(e2);
+                android.location.Location.distanceBetween(target.latitude, target.longitude, location2.latitude, location2.longitude, result2);
+                Float distance2 = result2[0];
+
+                return distance1.compareTo(distance2);
+            }
+        };
+
+
+        Collections.sort(events, comp);
+        return events;
     }
 
 

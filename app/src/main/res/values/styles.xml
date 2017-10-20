@@ -25,7 +25,6 @@
         <item name="android:textColorHint">@color/red100</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:editTextColor">@color/white</item>
-        <item name="android:background">@drawable/bg_searchview</item>
     </style>
 
     <style name="div">

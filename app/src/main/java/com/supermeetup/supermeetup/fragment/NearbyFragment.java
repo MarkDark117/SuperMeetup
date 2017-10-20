@@ -37,6 +37,7 @@ public class NearbyFragment extends Fragment {
 
     private static NearbyFragment mFragment;
     private Location mLocation;
+    private String mQuery = "";
 
     public static NearbyFragment getInstance(Location location){
         if(mFragment == null){
@@ -60,7 +61,8 @@ public class NearbyFragment extends Fragment {
         mLoadingDialog = new LoadingDialog(getActivity());
         mNearbyBinding.nearbyListview.setLayoutManager(new LinearLayoutManager(getActivity()));
         mNearbyBinding.nearbyListview.setAdapter(new CategoryAndEventAdapter(getActivity()));
-
+        mNearbyBinding.nearbySearchlayout.searchview.setQuery(mQuery, false);
+        mNearbyBinding.nearbySearchlayout.searchview.clearFocus();
         mNearbyBinding.nearbySearchlayout.searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -86,6 +88,10 @@ public class NearbyFragment extends Fragment {
         if(location != null) {
             mLocation = location;
         }
+    }
+
+    public void setQuery(String query){
+        mQuery = query;
     }
 
     private void loadCategories(){
@@ -132,7 +138,7 @@ public class NearbyFragment extends Fragment {
                 mLoadingDialog.dismiss();
                 Log.e("finderror", "Recommended event request error: " + t.toString());
             }
-        }, Util.FIELDS_DEFAULT, mLocation.getLatitude(), mLocation.getLongitude(), null, null, null);
+        }, Util.DEFAULT_FIELDS, mLocation.getLatitude(), mLocation.getLongitude(), null, null, null);
     }
 
 
