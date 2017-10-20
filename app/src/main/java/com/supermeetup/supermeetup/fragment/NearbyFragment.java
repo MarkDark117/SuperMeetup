@@ -128,6 +128,7 @@ public class NearbyFragment extends Fragment {
             @Override
             public void onFailure(Call<ArrayList<Event>> call, Throwable t) {
                 // Log error here since request failed
+                mLoadingDialog.dismiss();
                 Log.e("finderror", "Recommended event request error: " + t.toString());
             }
         }, Util.FIELDS_DEFAULT, mLocation.getLatitude(), mLocation.getLongitude(), null, null, null);

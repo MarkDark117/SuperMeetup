@@ -27,9 +27,9 @@
 
                 <ImageView
                     android:id="@+id/recommendevents_category_icon"
-                    android:layout_width="@dimen/icon_default"
-                    android:layout_height="@dimen/icon_default"
-                    android:padding="@dimen/margin_small"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="@dimen/margin_mid"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:background="@mipmap/ic_round"/>
@@ -61,7 +61,8 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recommendevents_list"
-            style="@style/div"/>
+            style="@style/div"
+            android:clipToPadding="false" />
 
     </LinearLayout>
 

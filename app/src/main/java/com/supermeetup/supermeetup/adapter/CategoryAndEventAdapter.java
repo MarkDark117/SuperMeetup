@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.supermeetup.supermeetup.R;
 import com.supermeetup.supermeetup.adapter.viewholder.EventViewHolder;
 import com.supermeetup.supermeetup.adapter.viewholder.NearbyCategoryListViewHolder;
+import com.supermeetup.supermeetup.databinding.ItemCategorylistBinding;
 import com.supermeetup.supermeetup.databinding.ItemEventBinding;
 import com.supermeetup.supermeetup.model.Category;
 import com.supermeetup.supermeetup.model.Event;
@@ -57,7 +58,7 @@ public class CategoryAndEventAdapter extends RecyclerView.Adapter<RecyclerView.V
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         switch (viewType){
             case VIEWTYPE_CATEGORYLIST:
-                return new NearbyCategoryListViewHolder((LayoutInflater.from(parent.getContext()).inflate(R.layout.item_categorylist, parent, false)));
+                return new NearbyCategoryListViewHolder((ItemCategorylistBinding) DataBindingUtil.inflate(layoutInflater, R.layout.item_categorylist, parent, false));
             case VIEWTYPE_EVENTITEM:
                 return new EventViewHolder((ItemEventBinding) DataBindingUtil.inflate(layoutInflater, R.layout.item_event, parent, false), mShowFirstEventDivider);
             default:

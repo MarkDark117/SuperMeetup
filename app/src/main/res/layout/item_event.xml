@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android" >
-    <RelativeLayout style="@style/div"
-        android:layout_height="100dp"
-        android:layout_marginBottom="1dp"
-        android:gravity="bottom">
+    <RelativeLayout
+        style="@style/div"
+        android:layout_height="@dimen/event_height"
+        android:background="@color/white">
 
         <ImageView
             android:id="@+id/event_image"
@@ -39,7 +39,7 @@
                     android:layout_marginRight="@dimen/margin_mid"/>
                 <TextView
                     android:id="@+id/event_address"
-                    android:maxLines="2"
+                    android:lines="1"
                     android:ellipsize="end"
                     android:gravity="top"
                     style="@style/div.p"/>
@@ -70,7 +70,9 @@
                     android:layout_marginRight="@dimen/margin_mid"/>
                 <TextView
                     android:id="@+id/event_group"
-                    style="@style/div.h2"/>
+                    style="@style/div.h2"
+                    android:lines="1"
+                    android:ellipsize="end"/>
 
             </LinearLayout>
 

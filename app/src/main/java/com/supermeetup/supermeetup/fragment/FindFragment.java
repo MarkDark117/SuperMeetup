@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.supermeetup.supermeetup.MeetupApp;
 import com.supermeetup.supermeetup.R;
 import com.supermeetup.supermeetup.adapter.CategoryAndEventAdapter;
+import com.supermeetup.supermeetup.adapter.EventAdapter;
 import com.supermeetup.supermeetup.common.Util;
 import com.supermeetup.supermeetup.databinding.FragmentFindBinding;
 import com.supermeetup.supermeetup.dialog.LoadingDialog;
@@ -61,7 +62,7 @@ public class FindFragment extends Fragment {
         View view = mFindBinding.getRoot();
         mLoadingDialog = new LoadingDialog(getActivity());
         mFindBinding.findList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mFindBinding.findList.setAdapter(new CategoryAndEventAdapter(getActivity()));
+        mFindBinding.findList.setAdapter(new EventAdapter());
 
         mFindBinding.findSearchlayout.searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -86,19 +87,22 @@ public class FindFragment extends Fragment {
     }
 
     private void loadEvents(){
+        mLoadingDialog.show();
         meetupClient.findEvent(new Callback<ArrayList<Event>>() {
             @Override
             public void onResponse(Call<ArrayList<Event>> call, Response<ArrayList<Event>> response) {
                 int statusCode = response.code();
                 ArrayList<Event> events = response.body();
                 if(events != null){
-                    ((CategoryAndEventAdapter) mFindBinding.findList.getAdapter()).setEvents(events, false);
+                    ((EventAdapter) mFindBinding.findList.getAdapter()).setEvents(events, false);
                 }
+                mLoadingDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<ArrayList<Event>> call, Throwable t) {
                 // Log error here since request failed
+                mLoadingDialog.dismiss();
                 Log.e("finderror", "Find event request error: " + t.toString());
             }
         }, Util.FIELDS_DEFAULT, mLocation.getLatitude(), mLocation.getLongitude(), Util.RADIUS_DEFAULT, mQuery);

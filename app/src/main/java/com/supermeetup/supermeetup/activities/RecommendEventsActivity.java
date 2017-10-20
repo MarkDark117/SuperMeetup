@@ -11,7 +11,9 @@ import android.view.View;
 
 import com.supermeetup.supermeetup.MeetupApp;
 import com.supermeetup.supermeetup.R;
+import com.supermeetup.supermeetup.adapter.CategoryAdapter;
 import com.supermeetup.supermeetup.adapter.CategoryAndEventAdapter;
+import com.supermeetup.supermeetup.adapter.EventAdapter;
 import com.supermeetup.supermeetup.common.Util;
 import com.supermeetup.supermeetup.databinding.ActivityRecommendeventsBinding;
 import com.supermeetup.supermeetup.dialog.CategoryDialog;
@@ -49,7 +51,7 @@ public class RecommendEventsActivity extends AppCompatActivity {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_recommendevents);
         mBinding.recommendeventsList.setLayoutManager(new LinearLayoutManager(this));
         mLoadingDialog = new LoadingDialog(this);
-        mBinding.recommendeventsList.setAdapter(new CategoryAndEventAdapter(this));
+        mBinding.recommendeventsList.setAdapter(new EventAdapter());
         updateUI(getIntent());
         mBinding.recommendeventsBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +81,7 @@ public class RecommendEventsActivity extends AppCompatActivity {
     }
 
     private void setEventList(ArrayList<Event> events){
-        ((CategoryAndEventAdapter) mBinding.recommendeventsList.getAdapter()).setEvents(events, false);
+        ((EventAdapter) mBinding.recommendeventsList.getAdapter()).setEvents(events, false);
         mBinding.recommendeventsList.scrollToPosition(0);
     }
 
@@ -105,6 +107,7 @@ public class RecommendEventsActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ArrayList<Event>> call, Throwable t) {
                 // Log error here since request failed
+                mLoadingDialog.dismiss();
                 Log.e("finderror", "Recommended event request error: " + t.toString());
             }
         }, Util.FIELDS_DEFAULT, mLocation.getLatitude(), mLocation.getLongitude(), null, null, (int)mCurrentCategory.getId());
