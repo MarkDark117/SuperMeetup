@@ -4,6 +4,8 @@ package com.supermeetup.supermeetup.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class Profile {
 
     @SerializedName("id")
@@ -12,6 +14,9 @@ public class Profile {
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("bio")
+    @Expose
+    private String bio;
     @SerializedName("status")
     @Expose
     private String status;
@@ -39,6 +44,9 @@ public class Profile {
     @SerializedName("photo")
     @Expose
     private Photo photo;
+    @SerializedName("topics")
+    @Expose
+    private ArrayList<Topic> topics;
 
     public long getId() {
         return id;
@@ -126,6 +134,22 @@ public class Profile {
 
     public void setPhoto(Photo photo) {
         this.photo = photo;
+    }
+
+    public ArrayList<Topic> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(ArrayList<Topic> topics) {
+        this.topics = topics;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 
 }

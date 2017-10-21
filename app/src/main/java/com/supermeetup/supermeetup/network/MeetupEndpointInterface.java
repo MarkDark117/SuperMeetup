@@ -68,5 +68,6 @@ public interface MeetupEndpointInterface {
      * @return The api call
      */
     @GET("/members/{member_id}")
-    Call<Profile> getProfile(@Path("member_id") String member_id);
+    Call<Profile> getProfile(@Path("member_id") String member_id,
+                             @Nullable @Query("fields") String fields);
 }
