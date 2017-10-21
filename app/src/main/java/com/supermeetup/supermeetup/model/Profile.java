@@ -4,8 +4,10 @@ package com.supermeetup.supermeetup.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
+import org.parceler.Parcel;
 
+import java.util.ArrayList;
+@Parcel
 public class Profile {
 
     @SerializedName("id")
@@ -47,6 +49,17 @@ public class Profile {
     @SerializedName("topics")
     @Expose
     private ArrayList<Topic> topics;
+    @SerializedName("memberships")
+    @Expose
+    private Membership memberships;
+
+    public Membership getMemberships() {
+        return memberships;
+    }
+
+    public void setMemberships(Membership memberships) {
+        this.memberships = memberships;
+    }
 
     public long getId() {
         return id;
