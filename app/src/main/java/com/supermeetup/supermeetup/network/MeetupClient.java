@@ -177,12 +177,13 @@ public class MeetupClient extends OAuthBaseClient {
     }
 
     public void getProfile(@NonNull Callback<Profile> callback,
-                           @Nullable Long member_id) {
+                           @Nullable Long member_id,
+                           @Nullable String fields) {
         String idString = "self";
         if (member_id != null) {
             idString = member_id.toString();
         }
-        Call<Profile> call = apiService.getProfile(idString);
+        Call<Profile> call = apiService.getProfile(idString, fields);
         call.enqueue(callback);
     }
 
