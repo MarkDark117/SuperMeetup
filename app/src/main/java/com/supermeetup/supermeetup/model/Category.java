@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,6 +51,9 @@ public class Category extends BaseModel {
     @SerializedName("category_ids")
     @Expose
     private List<Long> categoryIds = null;
+    @SerializedName("best_topics")
+    @Expose
+    private ArrayList<Topic> best_topics;
 
     public long getId() {
         return id;
@@ -97,6 +101,14 @@ public class Category extends BaseModel {
 
     public void setCategoryIds(List<Long> categoryIds) {
         this.categoryIds = categoryIds;
+    }
+
+    public ArrayList<Topic> getBestTopics() {
+        return best_topics;
+    }
+
+    public void setBestTopics(ArrayList<Topic> best_topics) {
+        this.best_topics = best_topics;
     }
 
 }
