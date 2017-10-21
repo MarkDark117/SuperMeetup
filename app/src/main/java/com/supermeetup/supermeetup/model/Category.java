@@ -1,11 +1,7 @@
 package com.supermeetup.supermeetup.model;
 
-import android.databinding.BindingAdapter;
-import android.widget.ImageView;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.supermeetup.supermeetup.common.Util;
 
 import org.parceler.Parcel;
 
@@ -34,7 +30,7 @@ import java.util.List;
  *  }
  */
 @Parcel
-public class Category {
+public class Category extends BaseModel {
 
     @SerializedName("id")
     @Expose

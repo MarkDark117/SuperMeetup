@@ -16,34 +16,42 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.supermeetup.supermeetup.MeetupApp;
 import com.supermeetup.supermeetup.R;
+import com.supermeetup.supermeetup.adapter.BaseAdapter;
 import com.supermeetup.supermeetup.databinding.FragmentEventListBinding;
 import com.supermeetup.supermeetup.listeners.EndlessRecyclerViewScrollListener;
 import com.supermeetup.supermeetup.model.Event;
-import com.supermeetup.supermeetup.network.MeetupClient;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class EventListFragment extends Fragment {
+public class BaseModelListFragment<T> extends Fragment {
 
-    public static final String TAG = "EventListFragment";
-    protected MeetupClient mClient;
+    public static final String TAG = "BaseModelListFragment";
     protected FragmentEventListBinding mEventListBinding;
-    protected RecyclerView.Adapter mEventAdapter;
+    protected BaseAdapter<T> mAdapter;
     protected EndlessRecyclerViewScrollListener mScrollListener;
+    protected DataLoadListener mDataLoadListener;
 
-    public EventListFragment() {
+    public BaseModelListFragment() {
         // Required empty public constructor
     }
 
-    public static EventListFragment getInstance(){
-        return new EventListFragment();
+    public static BaseModelListFragment getInstance(){
+        return new BaseModelListFragment();
     }
 
     public interface EventSelectedListener {
         // handle event selection
         void onEventSelected(@NonNull Event event);
+    }
+
+    public interface DataLoadListener<T> {
+        void getMoreData(int offset);
+    }
+
+    public interface DataProcessListener<T> {
+        void callback(@Nullable ArrayList<T> models);
     }
 
     @Override
@@ -52,7 +60,6 @@ public class EventListFragment extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         if (mEventListBinding != null) return mEventListBinding.getRoot();
-        mClient = MeetupApp.getRestClient(getContext());
         // Inflate the layout for this fragment
         mEventListBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_event_list, container, false);
 
@@ -80,7 +87,7 @@ public class EventListFragment extends Fragment {
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                loadNextDataFromApi(mEventAdapter.getItemCount());
+                loadNextDataFromApi(mAdapter.getItemCount());
             }
         };
 
@@ -95,13 +102,17 @@ public class EventListFragment extends Fragment {
         throw new UnsupportedOperationException();
     };
 
-    public void setAdapter(@Nullable RecyclerView.Adapter adapter) {
-        mEventAdapter = adapter;
+    public void setAdapter(@Nullable BaseAdapter adapter) {
+        mAdapter = adapter;
         mEventListBinding.rvEvents.setAdapter(adapter);
     }
 
-    public RecyclerView.Adapter getAdapter() {
-        return mEventListBinding.rvEvents.getAdapter();
+    public BaseAdapter getAdapter() {
+        return mAdapter;
+    }
+
+    public void setDataListener(@NonNull DataLoadListener dataLoadListener) {
+        this.mDataLoadListener = dataLoadListener;
     }
 
     /**
@@ -117,14 +128,14 @@ public class EventListFragment extends Fragment {
     // Offline mode
     protected void populateEvents(@NonNull List<Event> events) {
         //this.mEvents.addAll(tweets);
-        mEventAdapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
     }
 
     // Reset all views and clear items
     protected void reset() {
         mScrollListener.resetState();
-        //mEventAdapter.clear();
-        mEventAdapter.notifyDataSetChanged();
+        //mAdapter.clear();
+        mAdapter.notifyDataSetChanged();
     }
 
     public void fetchTimelineAsync(int page) {
@@ -135,19 +146,16 @@ public class EventListFragment extends Fragment {
 
     // Append the next page of data into the adapter
     public void loadNextDataFromApi(int offset) {
+        mDataLoadListener.getMoreData(offset);
         // Send an API request to retrieve appropriate paginated data
         //  --> Send the request including an offset value (i.e `page`) as a query parameter.
         //  --> Deserialize and construct new model objects from the API response
         //  --> Append the new data objects to the existing set of items inside the array of items
         //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
-        /*
-        if (Config.isOnline()) {
-            if (tweets.isEmpty()) return;
-            long maxId = tweets.get(tweets.size() - 1).uid - 1;
-            getMoreEvents(maxId);
-        } else {
-            populateEvents(Tweet.getTopOfflineTweets(offset, Constants.TWEETS_COUNT_PER_PAGE));
-        }*/
+    }
+
+    public void addModels(@Nullable ArrayList<T> models) {
+        mAdapter.addModels(models);
     }
 
 }

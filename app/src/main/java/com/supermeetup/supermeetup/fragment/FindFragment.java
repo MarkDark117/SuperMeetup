@@ -77,7 +77,7 @@ public class FindFragment extends Fragment {
         View view = mFindBinding.getRoot();
         mLoadingDialog = new LoadingDialog(getActivity());
         mFindBinding.findList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mFindBinding.findList.setAdapter(new EventAdapter());
+        mFindBinding.findList.setAdapter(new EventAdapter(null));
         if(!TextUtils.isEmpty(mQuery)){
             mFindBinding.findSearchlayout.searchview.setQuery(mQuery, true);
         }

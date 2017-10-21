@@ -12,6 +12,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 public interface MeetupEndpointInterface {
     /**
@@ -62,11 +63,15 @@ public interface MeetupEndpointInterface {
                                              @Nullable @Query("self_groups") Boolean self_groups,
                                              @Nullable @Query("topic_category") Integer topic_category);
 
+    @GET
+    Call<ArrayList<Event>> recommendedEventsNextPage(@Url String url);
+
     /**
      *
      * @param member_id
      * @return The api call
      */
     @GET("/members/{member_id}")
-    Call<Profile> getProfile(@Path("member_id") String member_id);
+    Call<Profile> getProfile(@Path("member_id") String member_id,
+                             @Nullable @Query("fields") String fields);
 }

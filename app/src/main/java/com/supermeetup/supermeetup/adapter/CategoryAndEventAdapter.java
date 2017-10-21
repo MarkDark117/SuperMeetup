@@ -20,35 +20,33 @@ import java.util.ArrayList;
  * Created by yuxin on 10/14/17.
  */
 
-public class CategoryAndEventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CategoryAndEventAdapter extends BaseAdapter<Event> {
     private static final int VIEWTYPE_CATEGORYLIST = 0;
     private static final int VIEWTYPE_EVENTITEM = 1;
 
     private Context mConext;
-    private ArrayList<Event> mEvents = new ArrayList<>();
     private ArrayList<Category> mCategories = new ArrayList<>();
     private boolean mShowFirstEventDivider;
 
-    public CategoryAndEventAdapter(Context context){
+    public CategoryAndEventAdapter(Context context) {
         mConext = context;
     }
 
-    public void setCategories(ArrayList<Category> categories){
+    public void setCategories(ArrayList<Category> categories) {
         mCategories = categories;
         notifyDataSetChanged();
     }
 
-    public void setEvents(ArrayList<Event> events, boolean showFirstDivider){
-        mEvents = events;
+    public void setEvents(ArrayList<Event> events, boolean showFirstDivider) {
+        setModels(events);
         mShowFirstEventDivider = showFirstDivider;
-        notifyDataSetChanged();
     }
 
     @Override
-    public int getItemViewType(int position){
-        if(position == 0){
+    public int getItemViewType(int position) {
+        if (position == 0) {
             return VIEWTYPE_CATEGORYLIST;
-        }else{
+        } else {
             return VIEWTYPE_EVENTITEM;
         }
     }
@@ -56,7 +54,7 @@ public class CategoryAndEventAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        switch (viewType){
+        switch (viewType) {
             case VIEWTYPE_CATEGORYLIST:
                 return new NearbyCategoryListViewHolder((ItemCategorylistBinding) DataBindingUtil.inflate(layoutInflater, R.layout.item_categorylist, parent, false));
             case VIEWTYPE_EVENTITEM:
@@ -69,18 +67,25 @@ public class CategoryAndEventAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         int viewType = holder.getItemViewType();
-        switch (viewType){
+        switch (viewType) {
             case VIEWTYPE_CATEGORYLIST:
                 ((NearbyCategoryListViewHolder) holder).bind(mCategories);
                 break;
             case VIEWTYPE_EVENTITEM:
-                ((EventViewHolder) holder).bind(mEvents.get(position-1), position-1);
+                ((EventViewHolder) holder).bind((Event) mModels.get(position - 1), position - 1);
                 break;
         }
     }
 
     @Override
     public int getItemCount() {
-        return mEvents.size() + 1;
+        return mModels.size() + 1;
+    }
+
+    @Override
+    public void clear() {
+        mModels.clear();
+        mCategories.clear();
+        notifyDataSetChanged();
     }
 }

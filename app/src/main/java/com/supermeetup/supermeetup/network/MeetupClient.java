@@ -19,8 +19,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
+import okhttp3.Headers;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -46,6 +46,8 @@ public class MeetupClient extends OAuthBaseClient {
     private MeetupEndpointInterface apiService;
     private MeetupStreamApiInterface streamService;
     private OkHttpClient okHttpClient;
+    // Used for pagination
+    private String nextUrl;
 
     public MeetupClient(Context context) {
         super(context,
@@ -90,8 +92,7 @@ public class MeetupClient extends OAuthBaseClient {
         };
 
         // Add the interceptor to OkHttpClient
-        OkHttpClient.Builder builder = new OkHttpClient.Builder().readTimeout(15, TimeUnit.SECONDS)
-                .connectTimeout(15, TimeUnit.SECONDS);
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.interceptors().add(interceptor);
         okHttpClient = builder.build();
 
@@ -173,6 +174,24 @@ public class MeetupClient extends OAuthBaseClient {
                                   @Nullable Boolean self_groups,
                                   @Nullable Integer topic_category) {
         Call<ArrayList<Event>> call = apiService.recommendedEvents(fields, lat, lon, page, self_groups, topic_category);
+        call.enqueue(callback);
+    }
+
+
+    public void saveNextUrlForRecommendedEvents(@NonNull retrofit2.Response response) {
+        Headers headers = response.headers();
+        if (headers != null) {
+            nextUrl = headers.get("Link");
+            if(nextUrl != null && !nextUrl.isEmpty()) {
+                nextUrl = nextUrl.substring(nextUrl.indexOf('<') + 1, nextUrl.lastIndexOf('>'));
+            }
+        } else {
+            nextUrl = null;
+        }
+    }
+
+    public void queryNextUrlForRecommendedEvents(@NonNull Callback<ArrayList<Event>> callback) {
+        Call<ArrayList<Event>> call = apiService.recommendedEventsNextPage(nextUrl);
         call.enqueue(callback);
     }
 

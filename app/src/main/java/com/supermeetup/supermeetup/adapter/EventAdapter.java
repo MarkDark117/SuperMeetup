@@ -1,15 +1,15 @@
 package com.supermeetup.supermeetup.adapter;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.supermeetup.supermeetup.R;
 import com.supermeetup.supermeetup.adapter.viewholder.EventViewHolder;
 import com.supermeetup.supermeetup.databinding.ItemEventBinding;
-import com.supermeetup.supermeetup.model.Category;
 import com.supermeetup.supermeetup.model.Event;
 
 import java.util.ArrayList;
@@ -18,13 +18,19 @@ import java.util.ArrayList;
  * Created by Irene on 10/19/17.
  */
 
-public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class EventAdapter extends BaseAdapter {
 
     private ArrayList<Event> mEvents = new ArrayList<>();
     private boolean mShowFirstEventDivider;
+    private EventAdapterListener eventAdapterListener;
 
-    public EventAdapter(){
+    public EventAdapter(@NonNull EventAdapterListener eventAdapterListener){
+        this.eventAdapterListener = eventAdapterListener;
+    }
 
+    // define an interface required by the ViewHolder
+    public interface EventAdapterListener {
+        void onItemSeleted(View view, int position);
     }
 
     public void setEvents(ArrayList<Event> events, boolean showFirstDivider){

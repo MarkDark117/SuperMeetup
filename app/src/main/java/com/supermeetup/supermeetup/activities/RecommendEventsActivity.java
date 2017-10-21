@@ -49,7 +49,7 @@ public class RecommendEventsActivity extends AppCompatActivity {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_recommendevents);
         mBinding.recommendeventsList.setLayoutManager(new LinearLayoutManager(this));
         mLoadingDialog = new LoadingDialog(this);
-        mBinding.recommendeventsList.setAdapter(new EventAdapter());
+        mBinding.recommendeventsList.setAdapter(new EventAdapter(null));
         updateUI(getIntent());
         mBinding.recommendeventsBack.setOnClickListener(new View.OnClickListener() {
             @Override

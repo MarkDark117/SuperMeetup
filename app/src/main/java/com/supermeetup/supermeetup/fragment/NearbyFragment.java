@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,11 +32,16 @@ import retrofit2.Response;
  * Created by Irene on 10/17/17.
  */
 
-public class NearbyFragment extends Fragment {
+public class NearbyFragment extends Fragment implements BaseModelListFragment.DataLoadListener<Event> {
 
     private static NearbyFragment mFragment;
     private Location mLocation;
     private String mQuery = "";
+    private BaseModelListFragment mBaseModelListFragment;
+    private CategoryAndEventAdapter categoryAndEventAdapter;
+
+    public NearbyFragment() {
+    }
 
     public static NearbyFragment getInstance(Location location){
         if(mFragment == null){
@@ -53,14 +57,18 @@ public class NearbyFragment extends Fragment {
     private MeetupClient meetupClient;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
                              Bundle savedInstanceState) {
-        mNearbyBinding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_nearby, container, false);
+        super.onCreateView(inflater, container, savedInstanceState);
+        mNearbyBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_nearby, container, false);
         View view = mNearbyBinding.getRoot();
+
+        mBaseModelListFragment = BaseModelListFragment.getInstance();
+        mBaseModelListFragment.placeEventListFragment(getFragmentManager(), R.id.nearby_listview);
+        mBaseModelListFragment.setDataListener(this);
+
         mLoadingDialog = new LoadingDialog(getActivity());
-        mNearbyBinding.nearbyListview.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mNearbyBinding.nearbyListview.setAdapter(new CategoryAndEventAdapter(getActivity()));
         mNearbyBinding.nearbySearchlayout.searchview.setQuery(mQuery, false);
         mNearbyBinding.nearbySearchlayout.searchview.clearFocus();
         mNearbyBinding.nearbySearchlayout.searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -101,12 +109,13 @@ public class NearbyFragment extends Fragment {
         meetupClient.findTopicCategories(new Callback<ArrayList<Category>>() {
             @Override
             public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
-                int statusCode = response.code();
-                ArrayList<Category> categories = response.body();
-                if(categories != null){
-                    setCategoryList(categories);
+                if (response.isSuccessful()) {
+                    ArrayList<Category> categories = response.body();
+                    if(categories != null){
+                        NearbyFragment.this.setCategoryList(categories);
+                    }
+                    loadRecommendEvents();
                 }
-                loadRecommendEvents();
             }
 
             @Override
@@ -123,11 +132,12 @@ public class NearbyFragment extends Fragment {
         meetupClient.recommendedEvents(new Callback<ArrayList<Event>>() {
             @Override
             public void onResponse(Call<ArrayList<Event>> call, Response<ArrayList<Event>> response) {
-                int statusCode = response.code();
-                ArrayList<Event> events = response.body();
-                statusCode = 0;
-                if(events != null){
-                    setEventList(events);
+                if (response.isSuccessful()) {
+                    meetupClient.saveNextUrlForRecommendedEvents(response);
+                    ArrayList<Event> events = response.body();
+                    if(events != null){
+                        setEventList(events);
+                    }
                 }
                 mLoadingDialog.dismiss();
             }
@@ -143,10 +153,44 @@ public class NearbyFragment extends Fragment {
 
 
     private void setCategoryList(ArrayList<Category> categories){
-        ((CategoryAndEventAdapter) mNearbyBinding.nearbyListview.getAdapter()).setCategories(categories);
+        if (categoryAndEventAdapter == null) {
+            categoryAndEventAdapter = new CategoryAndEventAdapter(getActivity());
+            mBaseModelListFragment.setAdapter(categoryAndEventAdapter);
+        }
+
+        ((CategoryAndEventAdapter) mBaseModelListFragment.getAdapter()).setCategories(categories);
     }
 
     private void setEventList(ArrayList<Event> events){
-        ((CategoryAndEventAdapter) mNearbyBinding.nearbyListview.getAdapter()).setEvents(events, true);
+        if (categoryAndEventAdapter == null) {
+            categoryAndEventAdapter = new CategoryAndEventAdapter(getActivity());
+            mBaseModelListFragment.setAdapter(categoryAndEventAdapter);
+        }
+
+        ((CategoryAndEventAdapter) mBaseModelListFragment.getAdapter()).setEvents(events, true);
+    }
+
+    @Override
+    public void getMoreData(int offset) {
+        meetupClient.queryNextUrlForRecommendedEvents(new Callback<ArrayList<Event>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Event>> call, Response<ArrayList<Event>> response) {
+                if (response.isSuccessful()) {
+                    ArrayList<Event> events = response.body();
+                    if(events != null){
+                        mBaseModelListFragment.addModels(events);
+                    }
+                    meetupClient.saveNextUrlForRecommendedEvents(response);
+                }
+                mLoadingDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Event>> call, Throwable t) {
+                // Log error here since request failed
+                mLoadingDialog.dismiss();
+                Log.e("finderror", "Recommended event request error: " + t.toString());
+            }
+        } );
     }
 }

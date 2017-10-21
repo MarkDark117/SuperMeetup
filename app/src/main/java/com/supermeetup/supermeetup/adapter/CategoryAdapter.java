@@ -23,12 +23,11 @@ import java.util.ArrayList;
  * Created by yuxin on 10/14/17.
  */
 
-public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CategoryAdapter extends BaseAdapter {
     private static final int VIEWTYPE_ITEM = 0;
     private static final int VIEWTYPE_END = 1;
 
     private Context mContext;
-    private ArrayList<Category> mCategories = new ArrayList<>();
     private int mSize;
     private UIActionCallback mCallback;
 
@@ -38,14 +37,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public CategoryAdapter(Context context, ArrayList<Category> categories, int size, UIActionCallback callback){
         mContext = context;
-        mCategories = categories;
+        mModels = categories;
         mSize = size;
         mCallback = callback;
     }
 
     @Override
     public int getItemViewType(int position){
-        if(mSize == mCategories.size()){
+        if(mSize == mModels.size()){
             return VIEWTYPE_ITEM;
         }else if(position < 7 ){
             return VIEWTYPE_ITEM;
@@ -56,14 +55,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-        if(mCategories == null || mCategories.size() == 0){
+        if(mModels == null || mModels.size() == 0){
             return 0;
-        }else if(mCategories.size() == mSize){
+        }else if(mModels.size() == mSize){
             return mSize;
-        }else if(mCategories.size() > 7){
+        }else if(mModels.size() > 7){
             return 8;
         }else{
-            return mCategories.size() + 1;
+            return mModels.size() + 1;
         }
     }
 
@@ -74,7 +73,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case VIEWTYPE_END:
                 return new CategoryEndViewHolder((LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent, false)));
             case VIEWTYPE_ITEM:
-                return new CategoryViewHolder((ItemCategoryBinding) DataBindingUtil.inflate(layoutInflater, R.layout.item_category, parent, false), mCategories, mCallback);
+                return new CategoryViewHolder((ItemCategoryBinding) DataBindingUtil.inflate(layoutInflater, R.layout.item_category, parent, false), (ArrayList<Category>)mModels, mCallback);
             default:
                 return null;
         }
@@ -86,7 +85,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         int viewType = holder.getItemViewType();
         switch (viewType){
             case VIEWTYPE_ITEM:
-                ((CategoryViewHolder) holder).bind(mCategories.get(position));
+                ((CategoryViewHolder) holder).bind((Category)mModels.get(position));
                 break;
             case VIEWTYPE_END:
                 ((CategoryEndViewHolder) holder).bind();
@@ -113,7 +112,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mItemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CategoryDialog categoryDialog = new CategoryDialog((Activity)mContext, mCategories);
+                    CategoryDialog categoryDialog = new CategoryDialog((Activity)mContext, (ArrayList<Category>)mModels);
                     categoryDialog.show();
                 }
             });

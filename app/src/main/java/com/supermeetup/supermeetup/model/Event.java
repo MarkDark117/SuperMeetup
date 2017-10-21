@@ -1,6 +1,5 @@
 package com.supermeetup.supermeetup.model;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -10,7 +9,7 @@ import org.parceler.Parcel;
  * GET https://api.meetup.com/find/events
  */
 @Parcel
-public class Event {
+public class Event extends BaseModel {
 
     @SerializedName("created")
     @Expose
