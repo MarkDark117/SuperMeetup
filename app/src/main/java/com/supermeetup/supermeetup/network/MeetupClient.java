@@ -12,6 +12,7 @@ import com.loopj.android.http.RequestParams;
 import com.supermeetup.supermeetup.model.Category;
 import com.supermeetup.supermeetup.model.Event;
 import com.supermeetup.supermeetup.model.OpenEvent;
+import com.supermeetup.supermeetup.model.Profile;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -172,6 +173,16 @@ public class MeetupClient extends OAuthBaseClient {
                                   @Nullable Boolean self_groups,
                                   @Nullable Integer topic_category) {
         Call<ArrayList<Event>> call = apiService.recommendedEvents(fields, lat, lon, page, self_groups, topic_category);
+        call.enqueue(callback);
+    }
+
+    public void getProfile(@NonNull Callback<Profile> callback,
+                           @Nullable Long member_id) {
+        String idString = "self";
+        if (member_id != null) {
+            idString = member_id.toString();
+        }
+        Call<Profile> call = apiService.getProfile(idString);
         call.enqueue(callback);
     }
 

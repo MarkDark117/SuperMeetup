@@ -4,11 +4,13 @@ import android.support.annotation.Nullable;
 
 import com.supermeetup.supermeetup.model.Category;
 import com.supermeetup.supermeetup.model.Event;
+import com.supermeetup.supermeetup.model.Profile;
 
 import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface MeetupEndpointInterface {
@@ -59,4 +61,12 @@ public interface MeetupEndpointInterface {
                                              @Nullable @Query("page") Integer page,
                                              @Nullable @Query("self_groups") Boolean self_groups,
                                              @Nullable @Query("topic_category") Integer topic_category);
+
+    /**
+     *
+     * @param member_id
+     * @return The api call
+     */
+    @GET("/members/{member_id}")
+    Call<Profile> getProfile(@Path("member_id") String member_id);
 }
