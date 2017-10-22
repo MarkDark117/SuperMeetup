@@ -1,49 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <android.support.design.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+    <LinearLayout
+        style="@style/div.vlist"
+        android:layout_marginBottom="@dimen/bottom_bar_height">
 
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/app_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="true"
-            android:focusableInTouchMode="true">
+        <RelativeLayout
+            style="@style/div"
+            android:background="@color/colorPrimaryDark">
 
-            <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/toolbar_layout"
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="@dimen/icon_profile"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimaryDark"
-                app:contentScrim="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                android:layout_margin="10dp"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+                android:src="@drawable/logo"
+                android:tint="@color/white"
+                android:layout_centerInParent="true"/>
 
-                <ImageView
-                    android:id="@+id/toolbar_backdrop"
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_margin="10dp"
-                    android:scaleType="fitXY"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/logo"
-                    android:tint="@color/white"
-                    app:layout_collapseMode="parallax" />
+        </RelativeLayout>
 
-            </android.support.design.widget.CollapsingToolbarLayout>
 
-            <include layout="@layout/layout_searchview"
-                android:id="@+id/nearby_searchlayout"/>
-
-        </android.support.design.widget.AppBarLayout>
-
+        <include layout="@layout/layout_searchview"
+            android:id="@+id/nearby_searchlayout"/>
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/nearby_listview">
         </FrameLayout>
 
-    </android.support.design.widget.CoordinatorLayout>
+    </LinearLayout>
 </layout>
