@@ -69,7 +69,12 @@ public class NearbyFragment extends Fragment implements BaseModelListFragment.Da
         mBaseModelListFragment.setDataListener(this);
 
         mLoadingDialog = new LoadingDialog(getActivity());
-        mNearbyBinding.nearbySearchlayout.searchview.setQuery(mQuery, false);
+        mNearbyBinding.nearbySearchlayout.searchview.post(new Runnable() {
+            @Override
+            public void run() {
+                mNearbyBinding.nearbySearchlayout.searchview.setQuery(mQuery, false);
+            }
+        });
         mNearbyBinding.nearbySearchlayout.searchview.clearFocus();
         mNearbyBinding.nearbySearchlayout.searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

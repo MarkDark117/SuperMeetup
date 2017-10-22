@@ -82,7 +82,14 @@ public class FindFragment extends Fragment implements BaseModelListFragment.Data
         View view = mFindBinding.getRoot();
         mLoadingDialog = new LoadingDialog(getActivity());
         if(!TextUtils.isEmpty(mQuery)){
-            mFindBinding.findSearchlayout.searchview.setQuery(mQuery, true);
+            mFindBinding.findSearchlayout.searchview.post(new Runnable() {
+                @Override
+                public void run() {
+
+                    //MenuItemCompat.expandActionView(mSearchItem);
+                    mFindBinding.findSearchlayout.searchview.setQuery(mQuery, false);
+                }
+            });
         }
 
         mFindBinding.findMap.onCreate(savedInstanceState);
