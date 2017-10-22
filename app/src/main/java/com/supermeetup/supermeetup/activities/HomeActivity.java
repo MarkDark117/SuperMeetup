@@ -123,11 +123,10 @@ public class HomeActivity extends AppCompatActivity {
 
     private void checkPermission(){
         if ( Build.VERSION.SDK_INT >= 23 &&
-                ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     Util.PERMISSIONREQUEST_ACCESS_LOCATION);
 
         }else{
@@ -141,10 +140,12 @@ public class HomeActivity extends AppCompatActivity {
         switch (requestCode) {
             case Util.PERMISSIONREQUEST_ACCESS_LOCATION:
                 if (grantResults.length > 0) {
-                    boolean coarseLocation = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-                    boolean fineLocation = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean res = true;
+                    for(int i = 0; i < grantResults.length; i++){
+                        res = res && (grantResults[i] == PackageManager.PERMISSION_GRANTED);
+                    }
 
-                    if(coarseLocation && fineLocation)
+                    if(res)
                     {
                         getLocation();
                     } else {
