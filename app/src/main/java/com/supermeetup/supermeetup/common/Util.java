@@ -59,6 +59,7 @@ public class Util {
     public static final String  EXTRA_CATEGORY = "category";
     public static final String  EXTRA_CATEGORYLIST = "categorylist";
     public static final String  EXTRA_QUERY = "query";
+    public static final String  EXTRA_EVENT = "event";
 
     public static void disableBottomNavigationViewShiftMode(BottomNavigationView view) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
@@ -186,21 +187,6 @@ public class Util {
 
         Collections.sort(events, comp);
         return events;
-    }
-
-    public static String topicsToString(ArrayList<Topic> topics){
-        if(topics == null || topics.size() == 0){
-            return "";
-        }else{
-            StringBuilder sb = new StringBuilder();
-            int size = topics.size();
-            for(int i = 0; i < size -1; i++){
-                sb.append(topics.get(i).getName());
-                sb.append(", ");
-            }
-            sb.append(topics.get(size - 1).getName());
-            return sb.toString();
-        }
     }
 
     public static ArrayList<Group> getGroupsFromProfile(Profile profile){

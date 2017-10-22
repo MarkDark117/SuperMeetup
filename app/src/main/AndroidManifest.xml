@@ -30,7 +30,8 @@
 
         <activity
             android:name=".activities.LoginActivity"
-            android:theme="@style/AppTheme.login">
+            android:theme="@style/AppTheme.login"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,11 +50,17 @@
 
         <activity
             android:name=".activities.HomeActivity"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" ></activity>
 
         <activity
             android:name=".activities.RecommendEventsActivity"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" ></activity>
+
+        <activity
+            android:name=".activities.EventDetailActivity"
+            android:screenOrientation="portrait"></activity>
 
     </application>
 

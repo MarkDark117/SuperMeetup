@@ -1,5 +1,6 @@
 package com.supermeetup.supermeetup.fragment;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.location.Location;
 import android.os.Bundle;
@@ -18,9 +19,11 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.supermeetup.supermeetup.MeetupApp;
 import com.supermeetup.supermeetup.R;
+import com.supermeetup.supermeetup.activities.EventDetailActivity;
 import com.supermeetup.supermeetup.activities.HomeActivity;
 import com.supermeetup.supermeetup.adapter.EventAdapter;
 import com.supermeetup.supermeetup.common.Util;
@@ -28,6 +31,8 @@ import com.supermeetup.supermeetup.databinding.FragmentFindBinding;
 import com.supermeetup.supermeetup.dialog.LoadingDialog;
 import com.supermeetup.supermeetup.model.Event;
 import com.supermeetup.supermeetup.network.MeetupClient;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -164,13 +169,37 @@ public class FindFragment extends Fragment {
     private void placeMarker(ArrayList<Event> events, LatLng target){
         mGoogleMap.clear();
         if(events != null && events.size() > 0){
-            ArrayList<Event> nearbyEvents = Util.sortLocations(events, target);
-            for(Event event : nearbyEvents) {
+            final ArrayList<Event> nearbyEvents = Util.sortLocations(events, target);
+            for(int i = 0; i < nearbyEvents.size(); i++) {
+                Event event = nearbyEvents.get(i);
                 LatLng markerLocation = Util.getVenueLatLng(event);
-                mGoogleMap.addMarker(new MarkerOptions().position(markerLocation).title(event.getName()).snippet(event.getVenue().getFullAddress()));
+
+                Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(markerLocation).title(event.getName()).snippet(event.getVenue().getFullAddress()));
+                marker.setTag(i);
+
             }
             target = Util.getVenueLatLng(events.get(0));
+
+            mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    marker.showInfoWindow();
+                    return true;
+                }
+            });
+
+            mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    int position = (int) marker.getTag();
+                    Event event = nearbyEvents.get(position);
+                    Intent i = new Intent(getActivity(), EventDetailActivity.class);
+                    i.putExtra(Util.EXTRA_EVENT, Parcels.wrap(event));
+                    getActivity().startActivity(i);
+                }
+            });
         }
+
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(target)
                 .zoom(Util.DEFAULT_ZOOM)

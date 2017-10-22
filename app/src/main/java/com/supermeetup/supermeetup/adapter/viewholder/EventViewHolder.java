@@ -1,5 +1,6 @@
 package com.supermeetup.supermeetup.adapter.viewholder;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -8,12 +9,15 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.supermeetup.supermeetup.R;
+import com.supermeetup.supermeetup.activities.EventDetailActivity;
 import com.supermeetup.supermeetup.common.Util;
 import com.supermeetup.supermeetup.databinding.ItemEventBinding;
 import com.supermeetup.supermeetup.model.Event;
 import com.supermeetup.supermeetup.model.Group;
 import com.supermeetup.supermeetup.model.Photo;
 import com.supermeetup.supermeetup.model.Venue;
+
+import org.parceler.Parcels;
 
 /**
  * Created by Irene on 10/15/17.
@@ -33,7 +37,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
         mShowFirstDivider = showFirstDivider;
     }
 
-    public void bind(Event event, int position){
+    public void bind(final Event event, int position){
         if(position == 0 && !mShowFirstDivider){
             mBinding.eventDivider.setVisibility(View.GONE);
         }else{
@@ -61,6 +65,14 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
         }else{
             mBinding.eventAddress.setText(Util.getString(mBinding.getRoot().getContext(), R.string.no_location));
         }
+        mBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), EventDetailActivity.class);
+                i.putExtra(Util.EXTRA_EVENT, Parcels.wrap(event));
+                v.getContext().startActivity(i);
+            }
+        });
         mBinding.executePendingBindings();
     }
 

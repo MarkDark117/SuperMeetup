@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import org.parceler.Parcel;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.SimpleFormatter;
 
@@ -56,9 +57,9 @@ public class Event {
     @SerializedName("group")
     @Expose
     private Group group;
-    @SerializedName("event_host")
+    @SerializedName("event_hosts")
     @Expose
-    private EventHost eventHost;
+    private ArrayList<EventHost> eventHosts;
     @SerializedName("fee")
     @Expose
     private Fee fee;
@@ -174,14 +175,6 @@ public class Event {
         this.group = group;
     }
 
-    public EventHost getEventHost() {
-        return eventHost;
-    }
-
-    public void setEventHost(EventHost eventHost) {
-        this.eventHost = eventHost;
-    }
-
     public Fee getFee() {
         return fee;
     }
@@ -232,6 +225,14 @@ public class Event {
 
     public void setPlainTextNoImagesDescription(String plain_text_no_images_description) {
         this.plain_text_no_images_description = plain_text_no_images_description;
+    }
+
+    public ArrayList<EventHost> getEventHosts() {
+        return eventHosts;
+    }
+
+    public void setEventHosts(ArrayList<EventHost> eventHosts) {
+        this.eventHosts = eventHosts;
     }
 
     public String getEventTime(){

@@ -8,7 +8,9 @@
         android:layout_height="@dimen/action_bar_height"
         android:gravity="center_vertical"
         android:background="@color/colorPrimary"
-        android:paddingRight="@dimen/margin_normal">
+        android:paddingRight="@dimen/margin_normal"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true">
 
         <android.support.v7.widget.SearchView
             android:id="@+id/searchview"
