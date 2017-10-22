@@ -155,18 +155,17 @@ public class NearbyFragment extends Fragment implements BaseModelListFragment.Da
     private void setCategoryList(ArrayList<Category> categories){
         if (categoryAndEventAdapter == null) {
             categoryAndEventAdapter = new CategoryAndEventAdapter(getActivity());
-            mBaseModelListFragment.setAdapter(categoryAndEventAdapter);
         }
-
+        mBaseModelListFragment.setAdapter(categoryAndEventAdapter);
         ((CategoryAndEventAdapter) mBaseModelListFragment.getAdapter()).setCategories(categories);
     }
 
     private void setEventList(ArrayList<Event> events){
         if (categoryAndEventAdapter == null) {
             categoryAndEventAdapter = new CategoryAndEventAdapter(getActivity());
-            mBaseModelListFragment.setAdapter(categoryAndEventAdapter);
-        }
 
+        }
+        mBaseModelListFragment.setAdapter(categoryAndEventAdapter);
         ((CategoryAndEventAdapter) mBaseModelListFragment.getAdapter()).setEvents(events, true);
     }
 
