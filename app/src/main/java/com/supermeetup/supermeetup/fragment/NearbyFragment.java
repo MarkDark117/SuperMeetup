@@ -121,7 +121,7 @@ public class NearbyFragment extends Fragment implements BaseModelListFragment.Da
             @Override
             public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
                 // Log error here since request failed
-                Log.e("finderror", "Find topic categories request error: " + t.toString());
+                Log.e("nearbyerror", "Find topic categories request error: " + t.toString());
             }
         }, null, null, null, null);
 
@@ -155,7 +155,7 @@ public class NearbyFragment extends Fragment implements BaseModelListFragment.Da
                 if (isRefresh) {
                     mBaseModelListFragment.onRefreshingComplete();
                 }
-                Log.e("finderror", "Recommended event request error: " + t.toString());
+                Log.e("nearbyerror", "Recommended event request error: " + t.toString());
             }
         }, Util.DEFAULT_FIELDS, mLocation.getLatitude(), mLocation.getLongitude(), null, null, null);
     }
@@ -188,7 +188,7 @@ public class NearbyFragment extends Fragment implements BaseModelListFragment.Da
     public void getMoreData(int offset) {
         mLoadingDialog.setMessage(Util.getString(getActivity(), R.string.load_data));
         mLoadingDialog.show();
-        meetupClient.queryNextUrlForRecommendedEvents(new Callback<ArrayList<Event>>() {
+        meetupClient.getNextUrlForListEvents(new Callback<ArrayList<Event>>() {
             @Override
             public void onResponse(Call<ArrayList<Event>> call, Response<ArrayList<Event>> response) {
                 if (response.isSuccessful()) {
@@ -205,7 +205,7 @@ public class NearbyFragment extends Fragment implements BaseModelListFragment.Da
             public void onFailure(Call<ArrayList<Event>> call, Throwable t) {
                 // Log error here since request failed
                 mLoadingDialog.dismiss();
-                Log.e("finderror", "Recommended event request error: " + t.toString());
+                Log.e("nearerror", "Recommended event request error: " + t.toString());
             }
         } );
     }

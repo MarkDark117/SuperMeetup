@@ -18,9 +18,8 @@ import java.util.ArrayList;
  * Created by Irene on 10/19/17.
  */
 
-public class EventAdapter extends BaseAdapter {
+public class EventAdapter extends BaseAdapter<Event> {
 
-    private ArrayList<Event> mEvents = new ArrayList<>();
     private boolean mShowFirstEventDivider;
     private EventAdapterListener eventAdapterListener;
 
@@ -34,13 +33,13 @@ public class EventAdapter extends BaseAdapter {
     }
 
     public void setEvents(ArrayList<Event> events, boolean showFirstDivider){
-        mEvents = events;
+        mModels = events;
         mShowFirstEventDivider = showFirstDivider;
         notifyDataSetChanged();
     }
 
     public ArrayList<Event> getEvents(){
-        return mEvents;
+        return mModels;
     }
 
     @Override
@@ -51,11 +50,11 @@ public class EventAdapter extends BaseAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((EventViewHolder) holder).bind(mEvents.get(position), position);
+        ((EventViewHolder) holder).bind(mModels.get(position), position);
     }
 
     @Override
     public int getItemCount() {
-        return mEvents.size();
+        return mModels.size();
     }
 }

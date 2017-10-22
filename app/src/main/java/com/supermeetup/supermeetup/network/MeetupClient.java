@@ -190,8 +190,8 @@ public class MeetupClient extends OAuthBaseClient {
         }
     }
 
-    public void queryNextUrlForRecommendedEvents(@NonNull Callback<ArrayList<Event>> callback) {
-        Call<ArrayList<Event>> call = apiService.recommendedEventsNextPage(nextUrl);
+    public void getNextUrlForListEvents(@NonNull Callback<ArrayList<Event>> callback) {
+        Call<ArrayList<Event>> call = apiService.getEventListNextPage(nextUrl);
         call.enqueue(callback);
     }
 

@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -44,10 +43,11 @@ import retrofit2.Response;
  * Created by Irene on 10/19/17.
  */
 
-public class FindFragment extends Fragment {
+public class FindFragment extends Fragment implements BaseModelListFragment.DataLoadListener<Event> {
     private static FindFragment mFragment;
     private Location mLocation;
     private String mQuery;
+    private BaseModelListFragment mBaseModelListFragment;
 
     public static FindFragment getInstance(Location location, String query){
         if(mFragment == null){
@@ -81,8 +81,6 @@ public class FindFragment extends Fragment {
                 inflater, R.layout.fragment_find, container, false);
         View view = mFindBinding.getRoot();
         mLoadingDialog = new LoadingDialog(getActivity());
-        mFindBinding.findList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mFindBinding.findList.setAdapter(new EventAdapter(null));
         if(!TextUtils.isEmpty(mQuery)){
             mFindBinding.findSearchlayout.searchview.setQuery(mQuery, true);
         }
@@ -115,6 +113,11 @@ public class FindFragment extends Fragment {
         });
 
         meetupClient = MeetupApp.getRestClient(getActivity());
+
+        mBaseModelListFragment = BaseModelListFragment.getInstance();
+        mBaseModelListFragment.placeModelListFragment(getFragmentManager(), R.id.find_list);
+        mBaseModelListFragment.setDataListener(this);
+
         loadEvents();
         return view;
     }
@@ -124,7 +127,7 @@ public class FindFragment extends Fragment {
             mFindBinding.findSwitchview.setImageResource(R.mipmap.ic_list);
             mFindBinding.findList.setVisibility(View.GONE);
             mFindBinding.findMap.setVisibility(View.VISIBLE);
-            setMap(((EventAdapter) mFindBinding.findList.getAdapter()).getEvents());
+            setMap(((EventAdapter) mBaseModelListFragment.getAdapter()).getEvents());
         }else{
             mFindBinding.findSwitchview.setImageResource(R.mipmap.ic_map);
             mFindBinding.findList.setVisibility(View.VISIBLE);
@@ -213,15 +216,22 @@ public class FindFragment extends Fragment {
         meetupClient.findEvent(new Callback<ArrayList<Event>>() {
             @Override
             public void onResponse(Call<ArrayList<Event>> call, Response<ArrayList<Event>> response) {
-                int statusCode = response.code();
-                ArrayList<Event> events = response.body();
-                if(events != null){
-                    ((EventAdapter) mFindBinding.findList.getAdapter()).setEvents(events, false);
-                    if(!mIsListView){
-                        setMap(events);
+                if (response.isSuccessful()) {
+                    if (mBaseModelListFragment.getAdapter() == null) {
+                        mBaseModelListFragment.setAdapter(new EventAdapter(null));
+                        mBaseModelListFragment.disableRefresh();
                     }
+                    meetupClient.saveNextUrlForRecommendedEvents(response);
+
+                    ArrayList<Event> events = response.body();
+                    if(events != null){
+                        ((EventAdapter) mBaseModelListFragment.getAdapter()).setEvents(events, false);
+                        if(!mIsListView){
+                            setMap(events);
+                        }
+                    }
+                    mLoadingDialog.dismiss();
                 }
-                mLoadingDialog.dismiss();
             }
 
             @Override
@@ -233,4 +243,34 @@ public class FindFragment extends Fragment {
         }, Util.DEFAULT_FIELDS, mLocation.getLatitude(), mLocation.getLongitude(), Util.DEFAULT_RADIUS, mQuery);
     }
 
+    @Override
+    public void getNewData() {
+        throw new UnsupportedOperationException("No refresh support for find");
+    }
+
+    @Override
+    public void getMoreData(int offset) {
+        mLoadingDialog.setMessage(Util.getString(getActivity(), R.string.load_data));
+        mLoadingDialog.show();
+        meetupClient.getNextUrlForListEvents(new Callback<ArrayList<Event>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Event>> call, Response<ArrayList<Event>> response) {
+                if (response.isSuccessful()) {
+                    ArrayList<Event> events = response.body();
+                    if(events != null){
+                        mBaseModelListFragment.addModels(events);
+                    }
+                    meetupClient.saveNextUrlForRecommendedEvents(response);
+                }
+                mLoadingDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Event>> call, Throwable t) {
+                // Log error here since request failed
+                mLoadingDialog.dismiss();
+                Log.e("finderror", "Find event request error: " + t.toString());
+            }
+        } );
+    }
 }

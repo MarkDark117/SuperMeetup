@@ -64,7 +64,7 @@ public interface MeetupEndpointInterface {
                                              @Nullable @Query("topic_category") Integer topic_category);
 
     @GET
-    Call<ArrayList<Event>> recommendedEventsNextPage(@Url String url);
+    Call<ArrayList<Event>> getEventListNextPage(@Url String url);
 
     /**
      *
