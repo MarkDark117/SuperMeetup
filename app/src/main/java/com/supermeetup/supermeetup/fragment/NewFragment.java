@@ -5,6 +5,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +20,12 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 import com.supermeetup.supermeetup.MeetupApp;
 import com.supermeetup.supermeetup.R;
 import com.supermeetup.supermeetup.adapter.EventAdapter;
+import com.supermeetup.supermeetup.common.ImageRoundCorners;
 import com.supermeetup.supermeetup.common.Util;
 import com.supermeetup.supermeetup.databinding.FragmentNewBinding;
 import com.supermeetup.supermeetup.dialog.LoadingDialog;
@@ -86,7 +90,24 @@ public class NewFragment extends Fragment {
         return view;
     }
 
+    private void setWaitingPanel(){
+        mNewBinding.newConsoleStatus.setVisibility(View.VISIBLE);
+    }
+
+    private void setEventPanel(OpenEvent event){
+        mNewBinding.newConsoleStatus.setVisibility(View.INVISIBLE);
+        String url = Util.getGroupPhotoUrl(event.getGroup());
+        if(TextUtils.isEmpty(url)){
+            mNewBinding.newConsoleImage.setImageResource(R.mipmap.ic_launcher);
+        }else{
+            Picasso.with(getActivity()).load(url).into(mNewBinding.newConsoleImage);
+            mNewBinding.newConsoleTitle.setText(event.getName());
+            mNewBinding.newConsoleContent.setText(Util.getVenueAddress(getActivity(), event.getVenue()));
+        }
+    }
+
     private void loadOpenEvent(){
+        setWaitingPanel();
         meetupClient.streamOpenEvents(new Callback<OpenEvent>() {
             @Override
             public void onResponse(Call<OpenEvent> call, Response<OpenEvent> response) {
@@ -107,6 +128,7 @@ public class NewFragment extends Fragment {
 
     private void addEvent(OpenEvent event){
         mEvents.add(event);
+        setEventPanel(event);
         if(mEvents.size() == 10){
             mEvents.remove(0);
         }
@@ -119,6 +141,7 @@ public class NewFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap mMap) {
                 mGoogleMap = mMap;
+                mGoogleMap.clear();
                 if(mLoadingDialog.isShowing()) {
                     mLoadingDialog.dismiss();
                 }
@@ -136,7 +159,7 @@ public class NewFragment extends Fragment {
                     marker.showInfoWindow();
                     CameraPosition cameraPosition = new CameraPosition.Builder()
                             .target(markerLocation)
-                            .zoom(6)
+                            .zoom(4)
                             .build();
                     mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                     mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {

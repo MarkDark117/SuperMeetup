@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.supermeetup.supermeetup.R;
 import com.supermeetup.supermeetup.model.Category;
 import com.supermeetup.supermeetup.model.Event;
 import com.supermeetup.supermeetup.model.EventHost;
@@ -215,6 +216,20 @@ public class Util {
             }
         }
         return url;
+    }
+
+    public static String getVenueAddress(Context context, Venue venue){
+        String res;
+        if(venue == null){
+            res = getString(context, R.string.no_location);
+        }else{
+            if(venue.isVisible()){
+                res = venue.getFullAddress();
+            }else{
+                res = getString(context, R.string.private_location);
+            }
+        }
+        return res;
     }
 
 

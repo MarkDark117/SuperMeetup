@@ -39,6 +39,7 @@
     <string name="private_location">Location is only visible to members.</string>
     <string name="no_host">Haven\'t set host yet.</string>
     <string name="attendance">%1$s %2$s went</string>
+    <string name="waiting">Wait new event...</string>
 
     <!--Profile-->
     <string name="interests">Interests</string>
@@ -46,4 +47,5 @@
     <string name="recommendevent">Recommend Event (Shake to refresh)</string>
     <string name="who">%1$s %2$s</string>
     <string name="location">%1$s, %2$s</string>
+
 </resources>
