@@ -7,6 +7,9 @@ import org.parceler.Parcel;
 
 @Parcel
 public class OpenEvent {
+    public static final String VISIBILITYTYPE_PUBLIC = "public";
+    public static final String VISIBILITYTYPE_PUBLIC_LIMITED = "public_limited";
+    public static final String VISIBILITYTYPE_MEMBERS = "members";
 
     @SerializedName("utc_offset")
     @Expose
@@ -196,4 +199,7 @@ public class OpenEvent {
         this.status = status;
     }
 
+    public boolean isVisible(){
+        return VISIBILITYTYPE_PUBLIC.equals(visibility);
+    }
 }
