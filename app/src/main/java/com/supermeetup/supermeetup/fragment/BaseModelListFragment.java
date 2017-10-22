@@ -148,6 +148,6 @@ public class BaseModelListFragment<T> extends Fragment {
     }
 
     public void disableRefresh() {
-        mEventListBinding.swipeContainer.setOnClickListener(null);
+        mEventListBinding.swipeContainer.setEnabled(false);
     }
 }
