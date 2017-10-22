@@ -15,23 +15,23 @@ The following **required** functionality is completed:
 * [x] User can [get meetup categorys](https://www.meetup.com/meetup_api/docs/find/topic_categories/)
 * [x] User can [find meetups](https://www.meetup.com/meetup_api/docs/find/events/)
 * [x] User can [get recommended meetups](https://www.meetup.com/meetup_api/docs/recommended/events/)
-* [ ] User can subscribe [real time open meetups](https://www.meetup.com/meetup_api/docs/stream/2/open_events/)
+* [x] User can subscribe [real time open meetups](https://www.meetup.com/meetup_api/docs/stream/2/open_events/)
 * [x] Use AppBarLayout + Recyclerview + BottomNavigationView in CoordinatorLayout 
 * [x] User can switch Nearby, Search, New and Shake UI using BottomNavigationView.
 * [x] Nearby: Show nearby meetups
 * [x] Search: User can search meetups. 
   * [x] Show search result in a list by default 
-  * [ ] and can be switch to mapview
-* [ ] New: User can see real-time new meetups in mapview. Get real-time new meetups via Meetup Stream API
-* [ ] Shake: User can shake phone to get a recommended meetup.
-* [ ] Click any meetup item, user can see the meetup detail UI.
-* [ ] Click any group item, user can see the meetup group UI.
-* [ ] User can [infinitely paginate](http://guides.codepath.com/android/Endless-Scrolling-with-AdapterViews-and-RecyclerView) any listview.
+  * [x] and can be switch to mapview
+* [x] New: User can see real-time new meetups in mapview. Get real-time new meetups via Meetup Stream API
+* [x] Shake: User can shake phone to get a recommended meetup.
+* [x] Click any meetup item, user can see the meetup detail UI.
+* [x] Show meetup's group info and event host info (if it has).
+* [x] User can [infinitely paginate](http://guides.codepath.com/android/Endless-Scrolling-with-AdapterViews-and-RecyclerView) any listview.
 
 The following **optional** features are implemented:
 
 * [ ] List participant's profile image in each meetup
-* [ ] Can see user's profile
+* [x] Can see user's profile include interests list and membership
 
 The following **bonus** features are implemented:
 
@@ -56,6 +56,26 @@ Here's a walkthrough of finished user stories:
 [video](https://github.com/super-meetup/SuperMeetup/blob/master/media/sprint1/sprint1.mp4)
 
 <img src='https://github.com/super-meetup/SuperMeetup/blob/master/media/sprint1/sprint1.gif' title='GIF Walkthrough SuperMeetup Sprint 1' width='' alt='GIF Walkthrough SuperMeetup Sprint 1' />
+
+
+GIF created with [EZGIF.com](https://ezgif.com/video-to-gif).
+
+## Sprint 2
+
+Here's a walkthrough of finished user stories:
+[video](https://github.com/super-meetup/SuperMeetup/blob/master/media/sprint2/sprint2.mp4)
+
+Part I
+
+<img src='https://github.com/super-meetup/SuperMeetup/blob/master/media/sprint2/part1.gif' title='GIF Walkthrough SuperMeetup Sprint 2 part 1' width='' alt='GIF Walkthrough SuperMeetup Sprint 2 part 1' />
+
+Part II 
+
+<img src='https://github.com/super-meetup/SuperMeetup/blob/master/media/sprint2/part2.gif' title='GIF Walkthrough SuperMeetup Sprint 2 part 2' width='' alt='GIF Walkthrough SuperMeetup Sprint 2 part 2' />
+
+PartIII
+
+<img src='https://github.com/super-meetup/SuperMeetup/blob/master/media/sprint2/part3.gif' title='GIF Walkthrough SuperMeetup Sprint 2 part 3' width='' alt='GIF Walkthrough SuperMeetup Sprint 2 part 3' />
 
 
 GIF created with [EZGIF.com](https://ezgif.com/video-to-gif).
