@@ -65,7 +65,7 @@ public class NearbyFragment extends Fragment implements BaseModelListFragment.Da
         View view = mNearbyBinding.getRoot();
 
         mBaseModelListFragment = BaseModelListFragment.getInstance();
-        mBaseModelListFragment.placeEventListFragment(getFragmentManager(), R.id.nearby_listview);
+        mBaseModelListFragment.placeModelListFragment(getFragmentManager(), R.id.nearby_listview);
         mBaseModelListFragment.setDataListener(this);
 
         mLoadingDialog = new LoadingDialog(getActivity());
@@ -114,7 +114,7 @@ public class NearbyFragment extends Fragment implements BaseModelListFragment.Da
                     if(categories != null){
                         NearbyFragment.this.setCategoryList(categories);
                     }
-                    loadRecommendEvents();
+                    loadRecommendEvents(false);
                 }
             }
 
@@ -127,8 +127,11 @@ public class NearbyFragment extends Fragment implements BaseModelListFragment.Da
 
     }
 
-    private void loadRecommendEvents(){
+    private void loadRecommendEvents(final boolean isRefresh){
         mLoadingDialog.setMessage(Util.getString(getActivity(), R.string.load_event));
+        if (isRefresh) {
+            mLoadingDialog.show();
+        }
         meetupClient.recommendedEvents(new Callback<ArrayList<Event>>() {
             @Override
             public void onResponse(Call<ArrayList<Event>> call, Response<ArrayList<Event>> response) {
@@ -140,12 +143,18 @@ public class NearbyFragment extends Fragment implements BaseModelListFragment.Da
                     }
                 }
                 mLoadingDialog.dismiss();
+                if (isRefresh) {
+                    mBaseModelListFragment.onRefreshingComplete();
+                }
             }
 
             @Override
             public void onFailure(Call<ArrayList<Event>> call, Throwable t) {
                 // Log error here since request failed
                 mLoadingDialog.dismiss();
+                if (isRefresh) {
+                    mBaseModelListFragment.onRefreshingComplete();
+                }
                 Log.e("finderror", "Recommended event request error: " + t.toString());
             }
         }, Util.DEFAULT_FIELDS, mLocation.getLatitude(), mLocation.getLongitude(), null, null, null);
@@ -170,7 +179,15 @@ public class NearbyFragment extends Fragment implements BaseModelListFragment.Da
     }
 
     @Override
+    public void getNewData() {
+        mBaseModelListFragment.reset();
+        loadRecommendEvents(true);
+    }
+
+    @Override
     public void getMoreData(int offset) {
+        mLoadingDialog.setMessage(Util.getString(getActivity(), R.string.load_data));
+        mLoadingDialog.show();
         meetupClient.queryNextUrlForRecommendedEvents(new Callback<ArrayList<Event>>() {
             @Override
             public void onResponse(Call<ArrayList<Event>> call, Response<ArrayList<Event>> response) {

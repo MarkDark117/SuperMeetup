@@ -23,7 +23,6 @@ import com.supermeetup.supermeetup.listeners.EndlessRecyclerViewScrollListener;
 import com.supermeetup.supermeetup.model.Event;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class BaseModelListFragment<T> extends Fragment {
 
@@ -47,11 +46,9 @@ public class BaseModelListFragment<T> extends Fragment {
     }
 
     public interface DataLoadListener<T> {
+        // refresh
+        void getNewData();
         void getMoreData(int offset);
-    }
-
-    public interface DataProcessListener<T> {
-        void callback(@Nullable ArrayList<T> models);
     }
 
     @Override
@@ -70,7 +67,7 @@ public class BaseModelListFragment<T> extends Fragment {
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
-                fetchTimelineAsync(0);
+                mDataLoadListener.getNewData();
             }
         });
         // Configure the refreshing colors
@@ -119,16 +116,10 @@ public class BaseModelListFragment<T> extends Fragment {
      * Put this fragment into an fragment slot in derived fragment
      * @param fragmentId
      */
-    protected void placeEventListFragment(@NonNull FragmentManager fragmentManager, @IdRes int fragmentId) {
+    protected void placeModelListFragment(@NonNull FragmentManager fragmentManager, @IdRes int fragmentId) {
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(fragmentId, this, TAG);
         ft.commit();
-    }
-
-    // Offline mode
-    protected void populateEvents(@NonNull List<Event> events) {
-        //this.mEvents.addAll(tweets);
-        mAdapter.notifyDataSetChanged();
     }
 
     // Reset all views and clear items
@@ -136,12 +127,6 @@ public class BaseModelListFragment<T> extends Fragment {
         mScrollListener.resetState();
         //mAdapter.clear();
         mAdapter.notifyDataSetChanged();
-    }
-
-    public void fetchTimelineAsync(int page) {
-        // Send the network request to fetch the updated data
-        // `client` here is an instance of Android Async HTTP
-        // getHomeTimeline is an example endpoint.
     }
 
     // Append the next page of data into the adapter
@@ -158,4 +143,7 @@ public class BaseModelListFragment<T> extends Fragment {
         mAdapter.addModels(models);
     }
 
+    public void onRefreshingComplete() {
+        mEventListBinding.swipeContainer.setRefreshing(false);
+    }
 }
