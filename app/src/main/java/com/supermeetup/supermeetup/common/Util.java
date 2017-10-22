@@ -3,11 +3,13 @@ package com.supermeetup.supermeetup.common;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.databinding.BindingAdapter;
 import android.location.Location;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -16,6 +18,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.supermeetup.supermeetup.model.Category;
 import com.supermeetup.supermeetup.model.Event;
 import com.supermeetup.supermeetup.model.EventHost;
+import com.supermeetup.supermeetup.model.Group;
+import com.supermeetup.supermeetup.model.Member;
+import com.supermeetup.supermeetup.model.Membership;
+import com.supermeetup.supermeetup.model.Profile;
+import com.supermeetup.supermeetup.model.Topic;
 import com.supermeetup.supermeetup.model.Venue;
 
 import org.json.JSONArray;
@@ -28,6 +35,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -42,6 +50,8 @@ public class Util {
     public static final String  KEY_LOCATION = "location";
 
     public static final String  DEFAULT_FIELDS = "event_hosts, group_category, group_photo";
+    public static final String  DEFAULT_PROFILE_FIELDS = "topics, memberships";
+    public static final String  DEFAULT_CATEGORY_FELDS = "best_topics";
     public static final float   DEFAULT_RADIUS = 30.0f;
     public static final int     DEFAULT_ZOOM = 10;
 
@@ -175,6 +185,35 @@ public class Util {
 
         Collections.sort(events, comp);
         return events;
+    }
+
+    public static String topicsToString(ArrayList<Topic> topics){
+        if(topics == null || topics.size() == 0){
+            return "";
+        }else{
+            StringBuilder sb = new StringBuilder();
+            int size = topics.size();
+            for(int i = 0; i < size -1; i++){
+                sb.append(topics.get(i).getName());
+                sb.append(", ");
+            }
+            sb.append(topics.get(size - 1).getName());
+            return sb.toString();
+        }
+    }
+
+    public static ArrayList<Group> getGroupsFromProfile(Profile profile){
+        ArrayList<Group> res = new ArrayList<>();
+        Membership membership = profile.getMemberships();
+        if(membership != null){
+            ArrayList<Member> members = membership.getMember();
+            if(members != null && members.size() > 0){
+                for(Member member : members){
+                    res.add(member.getGroup());
+                }
+            }
+        }
+        return res;
     }
 
 

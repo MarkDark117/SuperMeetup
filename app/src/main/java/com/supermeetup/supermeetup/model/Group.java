@@ -41,6 +41,9 @@ public class Group {
     @SerializedName("created")
     @Expose
     private long created;
+    @SerializedName("members")
+    @Expose
+    private long members;
     @SerializedName("name")
     @Expose
     private String name;
@@ -68,7 +71,7 @@ public class Group {
     @SerializedName("region")
     @Expose
     private String region;
-    @SerializedName("photo")
+    @SerializedName("group_photo")
     @Expose
     private Photo photo;
     @SerializedName("category")
@@ -171,4 +174,11 @@ public class Group {
         this.category = category;
     }
 
+    public long getMembers() {
+        return members;
+    }
+
+    public void setMembers(long members) {
+        this.members = members;
+    }
 }

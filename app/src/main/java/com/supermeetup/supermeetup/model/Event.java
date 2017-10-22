@@ -1,15 +1,24 @@
 package com.supermeetup.supermeetup.model;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.SimpleFormatter;
+
 /**
  * GET https://api.meetup.com/find/events
  */
 @Parcel
-public class Event extends BaseModel {
+public class Event {
+
+    public static final String VISIBILITYTYPE_PUBLIC = "public";
+    public static final String VISIBILITYTYPE_PUBLIC_LIMITED = "public_limited";
+    public static final String VISIBILITYTYPE_MEMBERS = "members";
 
     @SerializedName("created")
     @Expose
@@ -208,6 +217,16 @@ public class Event extends BaseModel {
 
     public void setVisibility(String visibility) {
         this.visibility = visibility;
+    }
+
+    public boolean isPublic(){
+        return VISIBILITYTYPE_PUBLIC.equals(visibility);
+    }
+
+    public String getEventTime(){
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy h:mm a");
+        Date date = new Date(getTime());
+        return sdf.format(date);
     }
 
 }

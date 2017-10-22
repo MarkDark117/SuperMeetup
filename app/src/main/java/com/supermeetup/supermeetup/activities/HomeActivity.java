@@ -25,6 +25,7 @@ import com.supermeetup.supermeetup.common.LocationHelper;
 import com.supermeetup.supermeetup.common.Util;
 import com.supermeetup.supermeetup.databinding.ActivityHomeBinding;
 import com.supermeetup.supermeetup.dialog.LoadingDialog;
+import com.supermeetup.supermeetup.fragment.ShakeFragment;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -66,6 +67,7 @@ public class HomeActivity extends AppCompatActivity {
                 res = true;
                 break;
             case R.id.navigation_shake:
+                fragment = ShakeFragment.getInstance(mLocation);
                 res = true;
                 break;
         }

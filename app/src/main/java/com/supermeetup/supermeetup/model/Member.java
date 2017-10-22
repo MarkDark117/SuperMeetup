@@ -65,4 +65,5 @@ public class Member {
     public void setGroup(Group group) {
         this.group = group;
     }
+
 }

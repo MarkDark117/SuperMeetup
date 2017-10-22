@@ -49,6 +49,7 @@
     <style name="div.h2" parent="div">
         <item name="android:textColor">@color/textH2</item>
         <item name="android:textSize">@dimen/h2</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="div.p" parent="div">

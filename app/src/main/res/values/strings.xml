@@ -38,4 +38,10 @@
     <string name="no_location">Haven\'t set location yet.</string>
     <string name="private_location">Location is only visible to members.</string>
 
+    <!--Profile-->
+    <string name="interests">Interests</string>
+    <string name="member">Member</string>
+    <string name="recommendevent">Recommend Event (Shake to refresh)</string>
+    <string name="who">%1$s %2$s</string>
+    <string name="location">%1$s, %2$s</string>
 </resources>
