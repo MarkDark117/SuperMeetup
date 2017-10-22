@@ -71,9 +71,12 @@ public class Group {
     @SerializedName("region")
     @Expose
     private String region;
-    @SerializedName("group_photo")
+    @SerializedName("photo")
     @Expose
     private Photo photo;
+    @SerializedName("group_photo")
+    @Expose
+    private Photo group_photo;
     @SerializedName("category")
     @Expose
     private Category category;
@@ -180,5 +183,13 @@ public class Group {
 
     public void setMembers(long members) {
         this.members = members;
+    }
+
+    public Photo getGroupPhoto() {
+        return group_photo;
+    }
+
+    public void setGroupPhoto(Photo group_photo) {
+        this.group_photo = group_photo;
     }
 }

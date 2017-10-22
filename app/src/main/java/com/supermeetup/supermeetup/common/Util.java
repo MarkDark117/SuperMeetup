@@ -21,6 +21,7 @@ import com.supermeetup.supermeetup.model.EventHost;
 import com.supermeetup.supermeetup.model.Group;
 import com.supermeetup.supermeetup.model.Member;
 import com.supermeetup.supermeetup.model.Membership;
+import com.supermeetup.supermeetup.model.Photo;
 import com.supermeetup.supermeetup.model.Profile;
 import com.supermeetup.supermeetup.model.Topic;
 import com.supermeetup.supermeetup.model.Venue;
@@ -49,7 +50,7 @@ public class Util {
     public static final String  KEY_ATTEMPTINGLOGIN = "attempinglogin";
     public static final String  KEY_LOCATION = "location";
 
-    public static final String  DEFAULT_FIELDS = "event_hosts, group_category, group_photo";
+    public static final String  DEFAULT_FIELDS = "event_hosts, plain_text_no_images_description, group_category, group_photo";
     public static final String  DEFAULT_PROFILE_FIELDS = "topics, memberships";
     public static final String  DEFAULT_CATEGORY_FELDS = "best_topics";
     public static final float   DEFAULT_RADIUS = 30.0f;
@@ -214,6 +215,20 @@ public class Util {
             }
         }
         return res;
+    }
+
+    public static String getGroupPhotoUrl(Group group){
+        String url = "";
+        if(group != null) {
+            Photo photo = group.getPhoto();
+            if (photo == null) {
+                photo = group.getGroupPhoto();
+            }
+            if (photo != null) {
+                url = photo.getPhotoLink();
+            }
+        }
+        return url;
     }
 
 

@@ -43,15 +43,12 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
         Group group = event.getGroup();
         if(group != null) {
             mBinding.eventGroup.setText(group.getName());
-            Photo photo = group.getPhoto();
-            if(photo != null) {
-                String photoLink = photo.getPhotoLink();
-                if (!TextUtils.isEmpty(photoLink)) {
-                    Picasso.with(mBinding.getRoot().getContext())
-                            .load(photoLink)
-                            .placeholder(R.drawable.logo)
-                            .into(mBinding.eventImage);
-                }
+            String photoLink = Util.getGroupPhotoUrl(group);
+            if (!TextUtils.isEmpty(photoLink)) {
+                Picasso.with(mBinding.getRoot().getContext())
+                        .load(photoLink)
+                        .placeholder(R.drawable.logo)
+                        .into(mBinding.eventImage);
             }
         }
         Venue venue = event.getVenue();

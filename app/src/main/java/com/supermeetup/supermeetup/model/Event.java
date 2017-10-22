@@ -74,6 +74,9 @@ public class Event {
     @SerializedName("visibility")
     @Expose
     private String visibility;
+    @SerializedName("plain_text_no_images_description")
+    @Expose
+    private String plain_text_no_images_description;
 
     public long getCreated() {
         return created;
@@ -221,6 +224,14 @@ public class Event {
 
     public boolean isPublic(){
         return VISIBILITYTYPE_PUBLIC.equals(visibility);
+    }
+
+    public String getPlainTextNoImagesDescription() {
+        return plain_text_no_images_description;
+    }
+
+    public void setPlainTextNoImagesDescription(String plain_text_no_images_description) {
+        this.plain_text_no_images_description = plain_text_no_images_description;
     }
 
     public String getEventTime(){

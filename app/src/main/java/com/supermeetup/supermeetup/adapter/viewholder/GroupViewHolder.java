@@ -7,6 +7,7 @@ import android.view.View;
 import com.squareup.picasso.Picasso;
 import com.supermeetup.supermeetup.BR;
 import com.supermeetup.supermeetup.R;
+import com.supermeetup.supermeetup.common.Util;
 import com.supermeetup.supermeetup.databinding.ItemGroupBinding;
 import com.supermeetup.supermeetup.model.Group;
 import com.supermeetup.supermeetup.model.Photo;
@@ -24,15 +25,12 @@ public class GroupViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(Group group){
-        Photo photo = group.getPhoto();
-        if(photo != null){
-            String url = photo.getThumbLink();
-            if(!TextUtils.isEmpty(url)){
-                Picasso.with(mBinding.getRoot().getContext())
-                        .load(url)
-                        .placeholder(R.mipmap.ic_launcher)
-                        .into(mBinding.groupImage);
-            }
+        String url = Util.getGroupPhotoUrl(group);
+        if(!TextUtils.isEmpty(url)){
+            Picasso.with(mBinding.getRoot().getContext())
+                    .load(url)
+                    .placeholder(R.mipmap.ic_launcher)
+                    .into(mBinding.groupImage);
         }
         mBinding.setVariable(BR.group, group);
         mBinding.executePendingBindings();
