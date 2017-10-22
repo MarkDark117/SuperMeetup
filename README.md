@@ -32,6 +32,7 @@ The following **optional** features are implemented:
 
 * [ ] List participant's profile image in each meetup
 * [x] Can see user's profile include interests list and membership
+* [x] User can filter the nearby recommended event by category
 
 The following **bonus** features are implemented:
 
