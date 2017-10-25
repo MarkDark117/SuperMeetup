@@ -92,4 +92,16 @@ public interface MeetupEndpointInterface {
                                           @Nullable @Query("page") Integer page,
                                           @Nullable @Query("scroll") String scroll,
                                           @Nullable @Query("status") String status);
+
+    /**
+     *
+     * @param urlname The :urlname path element may be any valid group urlname.
+     * @param id The :id path element must be a valid alphanumeric Meetup Event identifier
+     * @param fields A comma-delimited list of optional fields to append to the response
+     * @return
+     */
+    @GET("/{urlname}/events/{id}")
+    Call<Event> getEvent(@Path("urlname") String urlname,
+                         @Path("id") String id,
+                         @Nullable @Query("fields") String fields);
 }

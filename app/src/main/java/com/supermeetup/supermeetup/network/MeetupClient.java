@@ -30,6 +30,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public class MeetupClient extends OAuthBaseClient {
 
@@ -220,6 +222,14 @@ public class MeetupClient extends OAuthBaseClient {
                                @Nullable String scroll,
                                @Nullable String status) {
         Call<ArrayList<Event>> call = apiService.getGroupEvents(urlname, desc, fields, page, scroll, status);
+        call.enqueue(callback);
+    }
+
+    public void getEvent(@NonNull Callback<Event> callback,
+                         @Path("urlname") String urlname,
+                         @Path("id") String id,
+                         @Nullable @Query("fields") String fields) {
+        Call<Event> call = apiService.getEvent(urlname, id, fields);
         call.enqueue(callback);
     }
 }
