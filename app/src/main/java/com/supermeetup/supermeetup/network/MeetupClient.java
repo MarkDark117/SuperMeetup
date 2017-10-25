@@ -211,4 +211,15 @@ public class MeetupClient extends OAuthBaseClient {
         Call<OpenEvent> call = streamService.openEvents(since_mtime);
         call.enqueue(callback);
     }
+
+    public void getGroupEvents(@NonNull Callback<ArrayList<Event>> callback,
+                               @Nullable String urlname,
+                               @Nullable Boolean desc,
+                               @Nullable String fields,
+                               @Nullable Integer page,
+                               @Nullable String scroll,
+                               @Nullable String status) {
+        Call<ArrayList<Event>> call = apiService.getGroupEvents(urlname, desc, fields, page, scroll, status);
+        call.enqueue(callback);
+    }
 }

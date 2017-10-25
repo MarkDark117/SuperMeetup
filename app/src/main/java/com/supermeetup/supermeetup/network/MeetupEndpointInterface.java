@@ -74,4 +74,22 @@ public interface MeetupEndpointInterface {
     @GET("/members/{member_id}")
     Call<Profile> getProfile(@Path("member_id") String member_id,
                              @Nullable @Query("fields") String fields);
+
+    /**
+     *
+     * @param urlname Target group urlname
+     * @param desc When true, sorts results in descending order. Defaults to false
+     * @param fields Comma-delimited list of optional fields to append to the response
+     * @param page Number of results to return in a page. Defaults to 200
+     * @param scroll A string representing an alias for a point on a timeline.
+     * @param status A comma-delimited list of event statuses. Valid values are: "cancelled", "draft", "past", "proposed", "suggested", or "upcoming". This defaults to "upcoming" unless a scroll parameter is provided.
+     * @return
+     */
+    @GET("/{urlname}/events")
+    Call<ArrayList<Event>> getGroupEvents(@Path("urlname") String urlname,
+                                          @Nullable @Query("desc") Boolean desc,
+                                          @Nullable @Query("fields") String fields,
+                                          @Nullable @Query("page") Integer page,
+                                          @Nullable @Query("scroll") String scroll,
+                                          @Nullable @Query("status") String status);
 }
