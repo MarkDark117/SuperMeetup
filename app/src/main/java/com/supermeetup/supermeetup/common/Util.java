@@ -2,6 +2,7 @@ package com.supermeetup.supermeetup.common;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.databinding.BindingAdapter;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.supermeetup.supermeetup.R;
+import com.supermeetup.supermeetup.activities.EventDetailActivity;
 import com.supermeetup.supermeetup.model.Category;
 import com.supermeetup.supermeetup.model.Event;
 import com.supermeetup.supermeetup.model.EventHost;
@@ -51,9 +53,9 @@ public class Util {
     public static final String  KEY_ATTEMPTINGLOGIN = "attempinglogin";
     public static final String  KEY_LOCATION = "location";
 
-    public static final String  DEFAULT_FIELDS = "event_hosts, plain_text_no_images_description, group_category, group_photo";
+    public static final String  DEFAULT_FIELDS = "event_hosts, plain_text_no_images_description, group_category, group_photo, photo_album";
     public static final String  DEFAULT_PROFILE_FIELDS = "topics, memberships";
-    public static final String  DEFAULT_CATEGORY_FELDS = "best_topics";
+    public static final String  DEFAULT_GROUP_FIELDS = "member_sample";
     public static final float   DEFAULT_RADIUS = 30.0f;
     public static final int     DEFAULT_ZOOM = 10;
 
@@ -61,6 +63,9 @@ public class Util {
     public static final String  EXTRA_CATEGORYLIST = "categorylist";
     public static final String  EXTRA_QUERY = "query";
     public static final String  EXTRA_EVENT = "event";
+    public static final String  EXTRA_EVENT_ID = "eventid";
+    public static final String  EXTRA_GROUP_USERNAME = "groupusername";
+    public static final String  EXTRA_GROUP = "group";
 
     public static void disableBottomNavigationViewShiftMode(BottomNavigationView view) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
@@ -232,6 +237,18 @@ public class Util {
         return res;
     }
 
+    public static void openEventDetail(Context context, String groupUserName, String eventId){
+        Intent intent = new Intent(context, EventDetailActivity.class);
+        intent.putExtra(Util.EXTRA_GROUP_USERNAME, groupUserName);
+        intent.putExtra(Util.EXTRA_EVENT_ID, eventId);
+        context.startActivity(intent);
+    }
+
+    public static int getGroupMemberRowCount(Context context){
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        return (int) dpWidth/36 -1;
+    }
 
     @BindingAdapter({"iconid"})
     public static void setIconId(ImageView view, long iconid) {

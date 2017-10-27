@@ -62,6 +62,10 @@
             android:name=".activities.EventDetailActivity"
             android:screenOrientation="portrait"></activity>
 
+        <activity
+            android:name=".activities.GroupActivity"
+            android:screenOrientation="portrait"></activity>
+
     </application>
 
 </manifest>

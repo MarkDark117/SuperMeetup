@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
+import java.util.ArrayList;
+
 /**
  * Created by yuxin on 10/13/17.
  * Sample:
@@ -80,6 +82,17 @@ public class Group {
     @SerializedName("category")
     @Expose
     private Category category;
+    @SerializedName("member_sample")
+    @Expose
+    private ArrayList<Profile> member_sample;
+
+    public ArrayList<Profile> getMemberSample() {
+        return member_sample;
+    }
+
+    public void setMemberSample(ArrayList<Profile> member_sample) {
+        this.member_sample = member_sample;
+    }
 
     public long getCreated() {
         return created;

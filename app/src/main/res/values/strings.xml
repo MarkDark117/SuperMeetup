@@ -33,6 +33,7 @@
     <string name="load_data">Loading Data...</string>
     <string name="load_category">Loading Categories...</string>
     <string name="load_event">Loading Events...</string>
+    <string name="load_group">Loading Group...</string>
 
     <!--event-->
     <string name="no_location">Haven\'t set location yet.</string>
@@ -47,5 +48,9 @@
     <string name="recommendevent">Recommend Event (Shake to refresh)</string>
     <string name="who">%1$s %2$s</string>
     <string name="location">%1$s, %2$s</string>
+
+    <!--Group-->
+    <string name="groupwho">We are %1$d %2$s in %3$s</string>
+    <string name="meetups">Meetups</string>
 
 </resources>

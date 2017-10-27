@@ -20,6 +20,8 @@ public class Event {
     public static final String VISIBILITYTYPE_PUBLIC = "public";
     public static final String VISIBILITYTYPE_PUBLIC_LIMITED = "public_limited";
     public static final String VISIBILITYTYPE_MEMBERS = "members";
+    public static final String STATUS_UPCOMING = "upcoming";
+    public static final String STATUS_PAST = "past";
 
     @SerializedName("created")
     @Expose
@@ -78,6 +80,9 @@ public class Event {
     @SerializedName("plain_text_no_images_description")
     @Expose
     private String plain_text_no_images_description;
+    @SerializedName("photo_album")
+    @Expose
+    private PhotoAlbum photoAlbum;
 
     public long getCreated() {
         return created;
@@ -235,10 +240,26 @@ public class Event {
         this.eventHosts = eventHosts;
     }
 
+    public PhotoAlbum getPhotoAlbum() {
+        return photoAlbum;
+    }
+
+    public void setPhotoAlbum(PhotoAlbum photoAlbum) {
+        this.photoAlbum = photoAlbum;
+    }
+
     public String getEventTime(){
         SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy h:mm a");
         Date date = new Date(getTime());
         return sdf.format(date);
+    }
+
+    public boolean isUpcomingStatus(){
+        return STATUS_UPCOMING.equals(status);
+    }
+
+    public boolean isPastStatus(){
+        return STATUS_PAST.equals(status);
     }
 
 }

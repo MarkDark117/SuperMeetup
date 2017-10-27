@@ -11,6 +11,7 @@ import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.loopj.android.http.RequestParams;
 import com.supermeetup.supermeetup.model.Category;
 import com.supermeetup.supermeetup.model.Event;
+import com.supermeetup.supermeetup.model.Group;
 import com.supermeetup.supermeetup.model.OpenEvent;
 import com.supermeetup.supermeetup.model.Profile;
 
@@ -230,6 +231,13 @@ public class MeetupClient extends OAuthBaseClient {
                          @Path("id") String id,
                          @Nullable @Query("fields") String fields) {
         Call<Event> call = apiService.getEvent(urlname, id, fields);
+        call.enqueue(callback);
+    }
+
+    public void getGroup(@NonNull Callback<Group> callback,
+                         @Path("urlname") String urlname,
+                         @Nullable @Query("fields") String fields) {
+        Call<Group> call = apiService.getGroup(urlname, fields);
         call.enqueue(callback);
     }
 }

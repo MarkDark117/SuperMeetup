@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 
 import com.supermeetup.supermeetup.model.Category;
 import com.supermeetup.supermeetup.model.Event;
+import com.supermeetup.supermeetup.model.Group;
 import com.supermeetup.supermeetup.model.Profile;
 
 import java.util.ArrayList;
@@ -103,5 +104,15 @@ public interface MeetupEndpointInterface {
     @GET("/{urlname}/events/{id}")
     Call<Event> getEvent(@Path("urlname") String urlname,
                          @Path("id") String id,
+                         @Nullable @Query("fields") String fields);
+
+    /**
+     *
+     * @param urlname The :urlname path element may be any valid group urlname.
+     * @param fields A comma-delimited list of optional fields to append to the response
+     * @return
+     */
+    @GET("/{urlname}")
+    Call<Group> getGroup(@Path("urlname") String urlname,
                          @Nullable @Query("fields") String fields);
 }

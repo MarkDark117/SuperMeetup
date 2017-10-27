@@ -41,6 +41,7 @@
             android:layout_margin="@dimen/margin_normal">
             <LinearLayout
                 style="@style/div.vlist" >
+
                 <RelativeLayout
                     android:id="@+id/eventdetail_grouplayout"
                     style="@style/div">
@@ -51,11 +52,22 @@
                         android:scaleType="centerCrop"
                         android:layout_centerVertical="true"
                         android:layout_alignParentLeft="true"
-                        android:layout_marginRight="@dimen/margin_normal"/>
+                        android:layout_marginRight="@dimen/margin_normal"
+                        android:src="@mipmap/ic_launcher_round"/>
+                    <ImageView
+                        android:id="@+id/eventdetail_group_more"
+                        android:layout_width="@dimen/icon_small"
+                        android:layout_height="@dimen/icon_small"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="@dimen/margin_mid"
+                        android:src="@mipmap/ic_right"
+                        android:tint="@color/grey500" />
                     <TextView
                         android:id="@+id/eventdetail_group_name"
                         style="@style/div.h2"
                         android:layout_toRightOf="@id/eventdetail_group_image"
+                        android:layout_toLeftOf="@id/eventdetail_group_more"
                         android:layout_alignParentTop="true"
                         android:text="@{event.group.name}"/>
                     <TextView
@@ -63,10 +75,15 @@
                         style="@style/div.p"
                         android:layout_marginTop="@dimen/margin_mid"
                         android:layout_toRightOf="@id/eventdetail_group_image"
+                        android:layout_toLeftOf="@id/eventdetail_group_more"
                         android:layout_below="@id/eventdetail_group_name"
                         android:text="@{event.group.localizedLocation}"/>
-
                 </RelativeLayout>
+
+                <TextView
+                    style="@style/div.divider"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="@dimen/margin_normal"/>
 
                 <TextView
                     style="@style/div.h1"

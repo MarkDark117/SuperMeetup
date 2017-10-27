@@ -1,5 +1,7 @@
 package com.supermeetup.supermeetup.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.location.Location;
 import android.os.Bundle;
@@ -24,6 +26,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 import com.supermeetup.supermeetup.MeetupApp;
 import com.supermeetup.supermeetup.R;
+import com.supermeetup.supermeetup.activities.EventDetailActivity;
 import com.supermeetup.supermeetup.adapter.EventAdapter;
 import com.supermeetup.supermeetup.common.ImageRoundCorners;
 import com.supermeetup.supermeetup.common.Util;
@@ -36,6 +39,7 @@ import com.supermeetup.supermeetup.network.MeetupClient;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -94,7 +98,7 @@ public class NewFragment extends Fragment {
         mNewBinding.newConsoleStatus.setVisibility(View.VISIBLE);
     }
 
-    private void setEventPanel(OpenEvent event){
+    private void setEventPanel(final OpenEvent event){
         mNewBinding.newConsoleStatus.setVisibility(View.INVISIBLE);
         String url = Util.getGroupPhotoUrl(event.getGroup());
         if(TextUtils.isEmpty(url)){
@@ -104,6 +108,12 @@ public class NewFragment extends Fragment {
             mNewBinding.newConsoleTitle.setText(event.getName());
             mNewBinding.newConsoleContent.setText(Util.getVenueAddress(getActivity(), event.getVenue()));
         }
+        mNewBinding.newConsole.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.openEventDetail(getActivity(), event.getGroup().getUrlname(), event.getId());
+            }
+        });
     }
 
     private void loadOpenEvent(){
@@ -128,14 +138,20 @@ public class NewFragment extends Fragment {
 
     private void addEvent(OpenEvent event){
         mEvents.add(event);
-        setEventPanel(event);
         if(mEvents.size() == 10){
             mEvents.remove(0);
         }
-        setMap();
+        setEventPanel(event);
+        setMap(event);
+
+
     }
 
-    private void setMap(){
+    private void setMap(final OpenEvent event){
+        final Venue venue = event.getVenue();
+        if(venue == null || !venue.isVisible()){
+            return;
+        }
 
         mNewBinding.newMap.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -148,29 +164,26 @@ public class NewFragment extends Fragment {
                 // For showing a move to my location button
                 mGoogleMap.setMyLocationEnabled(true);
 
-                OpenEvent openEvent = mEvents.get(mEvents.size() - 1);
-                Venue venue = openEvent.getVenue();
-                if(venue != null && venue.isVisible()) {
-//                    mGoogleMap.moveCamera(CameraUpdateFactory
-//                            .newLatLngZoom(new LatLng(venue.getLat(), venue.getLon()), Util.DEFAULT_RADIUS));
-                    LatLng markerLocation = new LatLng(venue.getLat(), venue.getLon());
-                    Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(markerLocation).title(openEvent.getName()).snippet(openEvent.getVenue().getFullAddress()));
-                    marker.setTag(openEvent.getId());
-                    marker.showInfoWindow();
-                    CameraPosition cameraPosition = new CameraPosition.Builder()
-                            .target(markerLocation)
-                            .zoom(4)
-                            .build();
-                    mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                    mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                        @Override
-                        public void onInfoWindowClick(Marker marker) {
-                            String id = (String) marker.getTag();
-                            Toast.makeText(getActivity(), id, Toast.LENGTH_SHORT).show();
-
+                LatLng markerLocation = new LatLng(venue.getLat(), venue.getLon());
+                Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(markerLocation).title(event.getName()).snippet(event.getVenue().getFullAddress()));
+                marker.setTag(event.getId() + "," + event.getGroup().getUrlname());
+                marker.showInfoWindow();
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(markerLocation)
+                        .zoom(4)
+                        .build();
+                mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+                        String s = (String) marker.getTag();
+                        String[] eventInfos = s.split(Pattern.quote(","));
+                        if(eventInfos != null && eventInfos.length == 2) {
+                            Util.openEventDetail(getActivity(), eventInfos[1], eventInfos[0]);
                         }
-                    });
-                }
+
+                    }
+                });
 
             }
         });

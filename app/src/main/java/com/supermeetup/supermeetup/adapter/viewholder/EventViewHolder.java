@@ -55,6 +55,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
                         .into(mBinding.eventImage);
             }
         }
+        mBinding.eventTime.setText(event.getEventTime());
         Venue venue = event.getVenue();
         if(venue!=null){
             if(venue.isVisible()) {
