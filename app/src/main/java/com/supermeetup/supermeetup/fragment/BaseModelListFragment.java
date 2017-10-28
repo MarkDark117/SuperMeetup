@@ -116,14 +116,14 @@ public class BaseModelListFragment<T> extends Fragment {
      * Put this fragment into an fragment slot in derived fragment
      * @param fragmentId
      */
-    protected void placeModelListFragment(@NonNull FragmentManager fragmentManager, @IdRes int fragmentId) {
+    public void placeModelListFragment(@NonNull FragmentManager fragmentManager, @IdRes int fragmentId) {
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(fragmentId, this, TAG);
         ft.commit();
     }
 
     // Reset all views and clear items
-    protected void reset() {
+    public void reset() {
         mScrollListener.resetState();
         //mAdapter.clear();
         mAdapter.notifyDataSetChanged();

@@ -59,10 +59,13 @@
 
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/recommendevents_list"
             style="@style/div"
-            android:clipToPadding="false" />
+            android:clipToPadding="false">
+        </FrameLayout>
 
     </LinearLayout>
 

@@ -80,7 +80,7 @@ public class GroupActivity extends AppCompatActivity {
             public void onFailure(Call<Group> call, Throwable t) {
                 // Log error here since request failed
                 mLoadingDialog.dismiss();
-                Log.e("finderror", "Recommended event request error: " + t.toString());
+                Log.e("grouperror", "get group request error: " + t.toString());
             }
         }, mGroupNameUrl, Util.DEFAULT_GROUP_FIELDS);
     }
@@ -102,7 +102,7 @@ public class GroupActivity extends AppCompatActivity {
             public void onFailure(Call<ArrayList<Event>> call, Throwable t) {
                 // Log error here since request failed
                 mLoadingDialog.dismiss();
-                Log.e("finderror", "Recommended event request error: " + t.toString());
+                Log.e("loadevent", "load event request error: " + t.toString());
             }
         }, mGroupNameUrl, null, Util.DEFAULT_FIELDS, null, null, null);
     }

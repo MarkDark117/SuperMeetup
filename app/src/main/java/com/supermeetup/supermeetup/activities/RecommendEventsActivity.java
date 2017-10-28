@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
 
@@ -16,6 +15,7 @@ import com.supermeetup.supermeetup.common.Util;
 import com.supermeetup.supermeetup.databinding.ActivityRecommendeventsBinding;
 import com.supermeetup.supermeetup.dialog.CategoryDialog;
 import com.supermeetup.supermeetup.dialog.LoadingDialog;
+import com.supermeetup.supermeetup.fragment.BaseModelListFragment;
 import com.supermeetup.supermeetup.model.Category;
 import com.supermeetup.supermeetup.model.Event;
 import com.supermeetup.supermeetup.network.MeetupClient;
@@ -32,7 +32,7 @@ import retrofit2.Response;
  * Created by Irene on 10/17/17.
  */
 
-public class RecommendEventsActivity extends AppCompatActivity {
+public class RecommendEventsActivity extends AppCompatActivity implements BaseModelListFragment.DataLoadListener<Event> {
 
     private ActivityRecommendeventsBinding mBinding;
     private Category mCurrentCategory;
@@ -40,6 +40,7 @@ public class RecommendEventsActivity extends AppCompatActivity {
     private LoadingDialog mLoadingDialog;
     private MeetupClient meetupClient;
     private Location mLocation;
+    private BaseModelListFragment mBaseModelListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +48,10 @@ public class RecommendEventsActivity extends AppCompatActivity {
         meetupClient = MeetupApp.getRestClient(this);
         mLocation = Util.readLocation(this, Util.KEY_LOCATION);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_recommendevents);
-        mBinding.recommendeventsList.setLayoutManager(new LinearLayoutManager(this));
         mLoadingDialog = new LoadingDialog(this);
-        mBinding.recommendeventsList.setAdapter(new EventAdapter(null));
+        mBaseModelListFragment = BaseModelListFragment.getInstance();
+        mBaseModelListFragment.placeModelListFragment(getSupportFragmentManager(), R.id.recommendevents_list);
+        mBaseModelListFragment.setDataListener(this);
         updateUI(getIntent());
         mBinding.recommendeventsBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,12 +77,15 @@ public class RecommendEventsActivity extends AppCompatActivity {
         }
         mBinding.recommendeventsCategoryIcon.setImageResource(Util.getCategoryIcon(this, mCurrentCategory.getId()));
         mBinding.recommendeventsCategoryName.setText(mCurrentCategory.getName());
-        loadRecommendEvents();
+        loadRecommendEvents(false);
     }
 
     private void setEventList(ArrayList<Event> events){
-        ((EventAdapter) mBinding.recommendeventsList.getAdapter()).setEvents(events, false);
-        mBinding.recommendeventsList.scrollToPosition(0);
+        if (mBaseModelListFragment.getAdapter() == null) {
+            mBaseModelListFragment.setAdapter(new EventAdapter(null));
+        }
+
+        ((EventAdapter) mBaseModelListFragment.getAdapter()).setEvents(events, false);
     }
 
     @Override
@@ -89,15 +94,55 @@ public class RecommendEventsActivity extends AppCompatActivity {
         updateUI(intent);
     }
 
-    private void loadRecommendEvents(){
+    private void loadRecommendEvents(final boolean isRefresh){
         mLoadingDialog.setMessage(Util.getString(this, R.string.load_event));
-        mLoadingDialog.show();
+        if (isRefresh) {
+            mLoadingDialog.show();
+        }
         meetupClient.recommendedEvents(new Callback<ArrayList<Event>>() {
             @Override
             public void onResponse(Call<ArrayList<Event>> call, Response<ArrayList<Event>> response) {
-                ArrayList<Event> events = response.body();
-                if(events != null){
-                    setEventList(events);
+                if (response.isSuccessful()) {
+                    meetupClient.saveNextUrlForRecommendedEvents(response);
+                    ArrayList<Event> events = response.body();
+                    if(events != null){
+                        setEventList(events);
+                    }
+                    mLoadingDialog.dismiss();
+                    if (isRefresh) {
+                        mBaseModelListFragment.onRefreshingComplete();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Event>> call, Throwable t) {
+                // Log error here since request failed
+                mLoadingDialog.dismiss();
+                Log.e("recommenderror", "Recommended event request error: " + t.toString());
+            }
+        }, Util.DEFAULT_FIELDS, mLocation.getLatitude(), mLocation.getLongitude(), null, null, (int)mCurrentCategory.getId());
+    }
+
+    @Override
+    public void getNewData() {
+        mBaseModelListFragment.reset();
+        loadRecommendEvents(true);
+    }
+
+    @Override
+    public void getMoreData(int offset) {
+        mLoadingDialog.setMessage(Util.getString(this, R.string.load_data));
+        mLoadingDialog.show();
+        meetupClient.getNextUrlForListEvents(new Callback<ArrayList<Event>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Event>> call, Response<ArrayList<Event>> response) {
+                if (response.isSuccessful()) {
+                    ArrayList<Event> events = response.body();
+                    if(events != null){
+                        mBaseModelListFragment.addModels(events);
+                    }
+                    meetupClient.saveNextUrlForRecommendedEvents(response);
                 }
                 mLoadingDialog.dismiss();
             }
@@ -106,9 +151,8 @@ public class RecommendEventsActivity extends AppCompatActivity {
             public void onFailure(Call<ArrayList<Event>> call, Throwable t) {
                 // Log error here since request failed
                 mLoadingDialog.dismiss();
-                Log.e("finderror", "Recommended event request error: " + t.toString());
+                Log.e("nearerror", "Recommended event request error: " + t.toString());
             }
-        }, Util.DEFAULT_FIELDS, mLocation.getLatitude(), mLocation.getLongitude(), null, null, (int)mCurrentCategory.getId());
+        } );
     }
-
 }
