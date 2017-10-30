@@ -33,6 +33,8 @@ The following **optional** features are implemented:
 * [ ] List participant's profile image in each meetup
 * [x] Can see user's profile include interests list and membership
 * [x] User can filter the nearby recommended event by category
+* [x] List participant's profile image in each group detail ui
+* [x] List past events in each group detail ui
 
 The following **bonus** features are implemented:
 
@@ -77,6 +79,23 @@ Part II
 PartIII
 
 <img src='https://github.com/super-meetup/SuperMeetup/blob/master/media/sprint2/part3.gif' title='GIF Walkthrough SuperMeetup Sprint 2 part 3' width='' alt='GIF Walkthrough SuperMeetup Sprint 2 part 3' />
+
+## Sprint 3
+
+Here's a walkthrough of finished user stories:
+[video](https://github.com/super-meetup/SuperMeetup/blob/master/media/sprint3/sprint3.mp4)
+
+Part I
+
+<img src='https://github.com/super-meetup/SuperMeetup/blob/master/media/sprint3/part1.gif' title='GIF Walkthrough SuperMeetup Sprint 3 part 1' width='' alt='GIF Walkthrough SuperMeetup Sprint 3 part 1' />
+
+Part II 
+
+<img src='https://github.com/super-meetup/SuperMeetup/blob/master/media/sprint3/part2.gif' title='GIF Walkthrough SuperMeetup Sprint 3 part 2' width='' alt='GIF Walkthrough SuperMeetup Sprint 3 part 2' />
+
+PartIII
+
+<img src='https://github.com/super-meetup/SuperMeetup/blob/master/media/sprint3/part3.gif' title='GIF Walkthrough SuperMeetup Sprint 3 part 3' width='' alt='GIF Walkthrough SuperMeetup Sprint 3 part 3' />
 
 
 GIF created with [EZGIF.com](https://ezgif.com/video-to-gif).
