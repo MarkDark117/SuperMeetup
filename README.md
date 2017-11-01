@@ -1,6 +1,6 @@
 # Group Project - *SuperMeetup*
 
-**SuperMeetup** is an android app that allows a user to search meetups in the world, to see new meetups on time, to get recommended meetups and decide which meetup to attend. The app utilizes [Meetup REST API](https://www.meetup.com/meetup_api/).
+**SuperMeetup** is an android app that allows a user to search meetups in the world, to see new meetups on time, and to get recommended meetups. The app utilizes [Meetup REST API](https://www.meetup.com/meetup_api/).
 
 Time spent: 80 hours (two people) spent in total
 
