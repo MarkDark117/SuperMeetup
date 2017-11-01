@@ -16,30 +16,27 @@ The following **required** functionality is completed:
 * [x] User can [find meetups](https://www.meetup.com/meetup_api/docs/find/events/)
 * [x] User can [get recommended meetups](https://www.meetup.com/meetup_api/docs/recommended/events/)
 * [x] User can subscribe [real time open meetups](https://www.meetup.com/meetup_api/docs/stream/2/open_events/)
-* [x] Use AppBarLayout + Recyclerview + BottomNavigationView in CoordinatorLayout 
+* [x] User can [get user's profile](https://www.meetup.com/meetup_api/docs/members/:member_id/#get)
+* [x] User can [get meetup details](https://www.meetup.com/meetup_api/docs/:urlname/events/:id/#get)
+* [x] User can [get meetup group details](https://www.meetup.com/meetup_api/docs/:urlname/#get)
+* [x] User can [get meetups in a group](https://www.meetup.com/meetup_api/docs/:urlname/events/#list)
 * [x] User can switch Nearby, Search, New and Shake UI using BottomNavigationView.
-* [x] Nearby: Show nearby meetups
-* [x] Search: User can search meetups. 
+* [x] Nearby UI: Show nearby meetups
+  * [x] Show recommend categories
+  * [x] Show nearby meetups in each category
+* [x] Search UI: User can search meetups. 
   * [x] Show search result in a list by default 
   * [x] and can be switch to mapview
-* [x] New: User can see real-time new meetups in mapview. Get real-time new meetups via Meetup Stream API
-* [x] Shake: User can shake phone to get a recommended meetup.
-* [x] Click any meetup item, user can see the meetup detail UI.
-* [x] Show meetup's group info and event host info (if it has).
+* [x] New UI: User can see real-time new meetups in mapview. Get real-time new meetups via Meetup Stream API
+* [x] Shake UI: User can shake phone to get a recommended meetup.
+  * [x] Show user's profile include interests list and membership
+  * [x] Use interests information in user's profile to select a recommended meetup
+* [x] Click any meetup item, user can see the meetup detail UI
+  * [x] Show meetup's group info and event host info (if it has)
+* [x] Click meetup's group info to show group detail UI
+  * [x] List sample participant's profile image in each group detail ui
+  * [x] List past events in each group detail ui
 * [x] User can [infinitely paginate](http://guides.codepath.com/android/Endless-Scrolling-with-AdapterViews-and-RecyclerView) any listview.
-
-The following **optional** features are implemented:
-
-* [ ] List participant's profile image in each meetup
-* [x] Can see user's profile include interests list and membership
-* [x] User can filter the nearby recommended event by category
-* [x] List participant's profile image in each group detail ui
-* [x] List past events in each group detail ui
-
-The following **bonus** features are implemented:
-
-* [ ] Can RSVP a meetup
-
 
 ## Wireframing
 
