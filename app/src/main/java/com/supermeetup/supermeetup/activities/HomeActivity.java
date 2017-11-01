@@ -14,10 +14,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.supermeetup.supermeetup.MeetupApp;
 import com.supermeetup.supermeetup.fragment.FindFragment;
 import com.supermeetup.supermeetup.fragment.NearbyFragment;
 import com.supermeetup.supermeetup.R;
@@ -27,8 +29,13 @@ import com.supermeetup.supermeetup.databinding.ActivityHomeBinding;
 import com.supermeetup.supermeetup.dialog.LoadingDialog;
 import com.supermeetup.supermeetup.fragment.NewFragment;
 import com.supermeetup.supermeetup.fragment.ShakeFragment;
+import com.supermeetup.supermeetup.model.Profile;
+import com.supermeetup.supermeetup.network.MeetupClient;
 
 import io.fabric.sdk.android.Fabric;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -38,6 +45,7 @@ public class HomeActivity extends AppCompatActivity {
     private Location mLocation;
     private LoadingDialog mLoadingDialog;
     private String mQuery;
+    private MeetupClient meetupClient;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -51,9 +59,21 @@ public class HomeActivity extends AppCompatActivity {
 
     };
 
+    private void iniLocation(){
+        mLocation = new Location("");
+        mLocation.setLatitude(37.422);
+        mLocation.setLongitude(-122.084);
+    }
+
     private boolean selectTab(){
         boolean res = false;
         Fragment fragment = null;
+        if(mLocation == null){
+            iniLocation();
+        }
+        if(mLoadingDialog.isShowing()){
+            mLoadingDialog.dismiss();
+        }
         switch (mCurrentTabId){
             case R.id.navigation_nearby:
                 fragment = NearbyFragment.getInstance(mLocation);
@@ -88,17 +108,27 @@ public class HomeActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    mLoadingDialog.dismiss();
-                    mLocation = location;
-                    Util.writeLocation(HomeActivity.this, Util.KEY_LOCATION, mLocation);
-                    Toast.makeText(HomeActivity.this, "Got Location",
-                            Toast.LENGTH_LONG).show();
-                    selectTab();
+                    if(location != null) {
+                        mLocation = location;
+                        setLocation();
+                    }else{
+                        loadProfile();
+                    }
                 }
             });
 
         }
     };
+
+    private void setLocation(){
+//        if(mLoadingDialog.isShowing()) {
+//            mLoadingDialog.dismiss();
+//        }
+        Util.writeLocation(HomeActivity.this, Util.KEY_LOCATION, mLocation);
+//        Toast.makeText(HomeActivity.this, "Got Location",
+//                Toast.LENGTH_LONG).show();
+        selectTab();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +139,7 @@ public class HomeActivity extends AppCompatActivity {
 
         mLocationHelper = new LocationHelper();
         mLoadingDialog = new LoadingDialog(this);
-
+        meetupClient = MeetupApp.getRestClient(this);
         checkPermission();
 
         Fabric.with(this, new Crashlytics());
@@ -171,5 +201,33 @@ public class HomeActivity extends AppCompatActivity {
             mQuery = intent.getStringExtra(Util.EXTRA_QUERY);
             mHomeActivityBinding.homeNavigation.setSelectedItemId(R.id.navigation_find);
         }
+    }
+
+    private void loadProfile(){
+        mLoadingDialog.setMessage(Util.getString(this, R.string.load_profile));
+        if(!mLoadingDialog.isShowing()){
+            mLoadingDialog.show();
+        }
+        meetupClient.getProfile(new Callback<Profile>() {
+            @Override
+            public void onResponse(Call<Profile> call, Response<Profile> response) {
+                int statusCode = response.code();
+                Profile profile = response.body();
+                if(profile != null) {
+                    mLocation = new Location("");
+                    mLocation.setLatitude(profile.getLat());
+                    mLocation.setLongitude((profile.getLon()));
+                    setLocation();
+                }
+                //mLoadingDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<Profile> call, Throwable t) {
+                // Log error here since request failed
+                mLoadingDialog.dismiss();
+                Log.e("finderror", "Find event request error: " + t.toString());
+            }
+        }, null, Util.DEFAULT_PROFILE_FIELDS);
     }
 }

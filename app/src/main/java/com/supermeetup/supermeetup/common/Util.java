@@ -90,7 +90,10 @@ public class Util {
     }
 
     public static String getString(Context context, int resId){
-        return context.getResources().getString(resId);
+        if(context != null && context.getResources() != null) {
+            return context.getResources().getString(resId);
+        }
+        return "";
     }
 
     public static int getColor(Context context, int resId){

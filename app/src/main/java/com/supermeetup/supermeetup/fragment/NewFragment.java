@@ -71,7 +71,7 @@ public class NewFragment extends Fragment {
         @Override
         public void run() {
             loadOpenEvent();
-            mHandler.postDelayed(this, 500);
+            mHandler.postDelayed(this, 1000);
         }
     };
 
@@ -117,6 +117,9 @@ public class NewFragment extends Fragment {
     }
 
     private void loadOpenEvent(){
+        if(!isAdded()){
+            return;
+        }
         setWaitingPanel();
         meetupClient.streamOpenEvents(new Callback<OpenEvent>() {
             @Override
@@ -141,10 +144,10 @@ public class NewFragment extends Fragment {
         if(mEvents.size() == 10){
             mEvents.remove(0);
         }
-        setEventPanel(event);
-        setMap(event);
-
-
+        if(isAdded()) {
+            setEventPanel(event);
+            setMap(event);
+        }
     }
 
     private void setMap(final OpenEvent event){

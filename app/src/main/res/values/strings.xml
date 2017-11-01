@@ -34,6 +34,7 @@
     <string name="load_category">Loading Categories...</string>
     <string name="load_event">Loading Events...</string>
     <string name="load_group">Loading Group...</string>
+    <string name="load_profile">Loading Profile...</string>
 
     <!--event-->
     <string name="no_location">Haven\'t set location yet.</string>
