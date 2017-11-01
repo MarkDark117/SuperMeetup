@@ -145,6 +145,10 @@ public class NewFragment extends Fragment {
             mEvents.remove(0);
         }
         if(isAdded()) {
+            final Venue venue = event.getVenue();
+            if(venue == null || !venue.isVisible()){
+                return;
+            }
             setEventPanel(event);
             setMap(event);
         }
@@ -152,10 +156,6 @@ public class NewFragment extends Fragment {
 
     private void setMap(final OpenEvent event){
         final Venue venue = event.getVenue();
-        if(venue == null || !venue.isVisible()){
-            return;
-        }
-
         mNewBinding.newMap.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap mMap) {
